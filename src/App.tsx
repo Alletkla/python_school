@@ -14,6 +14,9 @@ function App() {
         <Task code={"print(2)"} options={["2","4","8"]}>
           Überlege dir, welche Ausgabe erzeugt dieser Code:
         </Task>
+        <Task code={""} options={["5"]}>
+          Dein Code soll folgende Ausgabe erzeugen:
+        </Task>
     </div>
   )
 }

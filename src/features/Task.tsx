@@ -7,10 +7,10 @@ export default function Task(props: PropsWithChildren
         options: string[]
     }) {
     const [output, setOutput] = useState<string | null>(null)
-    const [selectedOptionIndex, setSelectedOption] = useState<number>(-1)
+    const [selectedOptionIndex, setSelectedOption] = useState<number>(props.options.length > 1 ? -1 : 0)
 
-    function setSelectedOptionRestriced(key: number){
-        if (output){
+    function setSelectedOptionRestriced(key: number) {
+        if (output) {
             return
         }
         setSelectedOption(key)
