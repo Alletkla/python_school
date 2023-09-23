@@ -1,0 +1,8 @@
+{
+    "title": "Variablen Einführung",
+    "type": "FIXED_OPTIONS",
+    "description": "Variablen sind \"Zwischenspeicher\" für Inhalte. Python erzeugt Variablen automatisch für dich. Im folgenden Code ist a zum Beispiel eine solche Variable. Variablen können beliebig oft überschrieben werden. Dabei gilt immer der zuletzt zugewiesene Wert.",
+    "code":"# lies: a wird der Wert 10 zugewiesen\na = 10\n# lies: a wird der Wert 5 zugewiesen\na = 5\n\n# Ausgabe:\nprint(a)",
+    "taskText": "Überlege dir, welche Ausgabe erzeugt dieser Code. Deine Antwort wird nach dem Ausführen geprüft.",
+    "options": ["5", "10", "2", "4"]
+}
