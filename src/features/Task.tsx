@@ -1,4 +1,4 @@
-import { PropsWithChildren, ReactElement, useState } from "react";
+import { PropsWithChildren, useState } from "react";
 import PythonSandbox from "./PythonSandbox";
 
 export default function Task(props: PropsWithChildren
@@ -20,6 +20,7 @@ export default function Task(props: PropsWithChildren
         if (props.options) {
             return props.options.map((option, key) => {
                 return <button
+                    key={key}
                     className={`btn ${getButtonColor(option, key) || "btn-secondary"} w-100 mt-2 `}
                     onClick={() => setSelectedOptionRestriced(key)}
                 >{option}</button>
