@@ -60,9 +60,9 @@ export default function Task(props: PropsWithChildren
     }
 
     return (
-        <div className="d-flex">
-            <PythonSandbox className="w-50" code={props.code} onOutput={setOutput} ableToRun={selectedOptionIndex !== -1}></PythonSandbox>
-            <div className="w-50 p-2">
+        <div className="row">
+            <PythonSandbox className="col-12 col-md" code={props.code} onOutput={setOutput} ableToRun={selectedOptionIndex !== -1}></PythonSandbox>
+            <div className="col-12 col-md p-2">
                 <h4>Aufgabe: </h4>
                 {props.children}
                 <div className="d-flex flex-wrap">{getOptions()}</div>

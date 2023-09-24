@@ -1,3 +1,4 @@
+import React from "react";
 import { PropsWithChildren, useEffect, useState } from "react";
 import Task from "./Task";
 import Skeleton from "react-loading-skeleton";
@@ -16,35 +17,60 @@ interface Task {
 }
 
 export default function TaskGeneratorFromFiles(props: PropsWithChildren & { number: number }) {
-    const [fileContent, setFileContent] = useState<Task | null>(null);
+    const [fileContents, setFileContents] = useState<Task[]>([]);
 
     const number = ("0" + props.number).slice(-2);
 
-    const string = `/tasks/${number}/VariablenEinfuehrung.json`
-    const url = new URL(string, import.meta.url).href
+
+    async function fetchFile(taskNumber: number, fileContents: Task[]) {
+        let string = `${import.meta.env.VITE_BASE_PREFIX}tasks/${number}/${("0" + taskNumber).slice(-2)}.json`
+        let url = new URL(string, import.meta.url).href
+        if (url && taskNumber < 5) {
+            // Use the fetch API to read the file
+            await fetch(url)
+                .then((response) => {
+                    if (!response.ok) {
+                        // make the promise be rejected if we didn't get a 2xx response
+                        throw new Error("File not Found");
+                    }
+                    return response.text();
+                })
+                .then(async (data) => {
+                    /** @TODO generate a UUID here? */
+                    fileContents.push(JSON.parse(data));
+                    // Continue fetching recursively with the next taskNumber
+                    await fetchFile(taskNumber + 1, fileContents);
+                })
+                .catch((error : Error) => {
+                    if (error.message !== "File not Found") {
+                        console.error('Error reading the file:', error);
+                    }
+                });
+        }
+        return fileContents
+    }
+
 
     useEffect(() => {
-        // Use the fetch API to read the file
-        fetch(url)
-            // fetch(new URL(`/VariablenEinfuehrung.json`, import.meta.url).href)
-            .then((response) => response.text())
-            .then((data) => {
-                setFileContent(JSON.parse(data));
-            })
-            .catch((error) => {
-                console.error('Error reading the file:', error);
-            });
+        fetchFile(1, []).then(contents => setFileContents(contents))
     }, []);
 
-    if (!fileContent){
+    if (!fileContents) {
         return <Skeleton count={5}></Skeleton>
     }
 
     return (<>
-        <h2>{fileContent?.title}</h2>
-        <p>{fileContent?.description}</p>
-        <Task code={fileContent?.code} options={fileContent?.options || []}>
-            {fileContent?.taskText}
-        </Task>
+        {fileContents.map((fileContent, key) => {
+            return (
+                <React.Fragment key={key}>
+                    <h2>{fileContent?.title}</h2>
+                    <p>{fileContent?.description}</p>
+                    <Task code={fileContent?.code} options={fileContent?.options || []}>
+                        {fileContent?.taskText}
+                    </Task>
+                </React.Fragment>
+                )
+        })}
+
     </>)
 }

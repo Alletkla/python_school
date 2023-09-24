@@ -1,5 +1,4 @@
 import './App.css'
-import Task from './features/Task'
 import TaskGeneratorFromFiles from './features/TaskGeneratorFromFiles'
 
 function App() {
@@ -9,7 +8,7 @@ function App() {
   return (
     <div className="container mx-auto">
       <h1> Python Online Kurs</h1>
-      {tasks.map(taskNumber => <TaskGeneratorFromFiles number={taskNumber}></TaskGeneratorFromFiles>)}
+      {tasks.map(taskNumber => <TaskGeneratorFromFiles key={taskNumber} number={taskNumber}></TaskGeneratorFromFiles>)}
     </div>
   )
 }

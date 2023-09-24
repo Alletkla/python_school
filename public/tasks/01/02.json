@@ -1,0 +1,8 @@
+{
+    "title": "Variablen Aufgabe",
+    "type": "FIXED_OPTIONS",
+    "description": "",
+    "code":"a \nprint(a)",
+    "taskText": "Weise der Variablen folgenden Wert zu: (Führe den Code aus, um dein Ergebnis zu überprüfen.)",
+    "options": ["7"]
+}
