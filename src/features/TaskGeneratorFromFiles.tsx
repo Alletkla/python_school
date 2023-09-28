@@ -2,6 +2,7 @@ import React from "react";
 import { PropsWithChildren, useEffect, useState } from "react";
 import Task from "./Task";
 import Skeleton from "react-loading-skeleton";
+import "./TaskGeneratorFromFiles.css"
 
 enum TaskTypes {
     FIXED_OPTIONS
@@ -61,10 +62,11 @@ export default function TaskGeneratorFromFiles(props: PropsWithChildren & { numb
 
     return (<>
         {fileContents.map((fileContent, key) => {
+            console.log(fileContent?.description)
             return (
                 <React.Fragment key={key}>
                     <h2>{fileContent?.title}</h2>
-                    <p>{fileContent?.description}</p>
+                    <p className="description">{fileContent?.description}</p>
                     <Task code={fileContent?.code} options={fileContent?.options || []}>
                         {fileContent?.taskText}
                     </Task>
