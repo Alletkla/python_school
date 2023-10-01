@@ -1,5 +1,5 @@
 import { PropsWithChildren, useState } from "react";
-import PythonSandbox from "./PythonSandbox";
+import PythonSandbox from "../PythonSandbox";
 
 export default function Task(props: PropsWithChildren
     & {
@@ -61,7 +61,7 @@ export default function Task(props: PropsWithChildren
 
     return (
         <div className="row">
-            <PythonSandbox className="col-12 col-md" code={props.code} onOutput={setOutput} ableToRun={selectedOptionIndex !== -1}></PythonSandbox>
+            <PythonSandbox key={props.code} className="col-12 col-md" code={props.code} onOutput={setOutput} ableToRun={selectedOptionIndex !== -1}></PythonSandbox>
             <div className="col-12 col-md p-2">
                 <h4>Aufgabe: </h4>
                 {props.children}

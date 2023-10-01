@@ -1,11 +1,13 @@
 import React from "react";
 import { PropsWithChildren, useEffect, useState } from "react";
-import Task from "./Task";
+import Task from "./Task/Task";
 import Skeleton from "react-loading-skeleton";
 import "./TaskGeneratorFromFiles.css"
+import ParameterizedTask from "./Task/ParameterizedTask";
 
 enum TaskTypes {
-    FIXED_OPTIONS
+    FIXED_OPTIONS = "FIXED_OPTIONS",
+    PARAMETERIZED_OPTIONS = "PARAMETERIZED_OPTIONS"
 }
 
 interface Task {
@@ -42,7 +44,7 @@ export default function TaskGeneratorFromFiles(props: PropsWithChildren & { numb
                     // Continue fetching recursively with the next taskNumber
                     await fetchFile(taskNumber + 1, fileContents);
                 })
-                .catch((error : Error) => {
+                .catch((error: Error) => {
                     if (error.message !== "File not Found") {
                         console.error('Error reading the file:', error);
                     }
@@ -53,6 +55,7 @@ export default function TaskGeneratorFromFiles(props: PropsWithChildren & { numb
 
 
     useEffect(() => {
+        //start at Task Number:
         fetchFile(1, []).then(contents => setFileContents(contents))
     }, []);
 
@@ -62,16 +65,24 @@ export default function TaskGeneratorFromFiles(props: PropsWithChildren & { numb
 
     return (<>
         {fileContents.map((fileContent, key) => {
-            console.log(fileContent?.description)
+            let task
+
+            if (fileContent?.type === TaskTypes.PARAMETERIZED_OPTIONS) {
+                task = <ParameterizedTask code={fileContent?.code} options={fileContent?.options || []}>
+                    {fileContent?.taskText}
+                </ParameterizedTask>
+            } else {
+                task = <Task code={fileContent?.code} options={fileContent?.options || []}>
+                    {fileContent?.taskText}
+                </Task>
+            }
             return (
                 <React.Fragment key={key}>
                     <h2>{fileContent?.title}</h2>
                     <p className="description">{fileContent?.description}</p>
-                    <Task code={fileContent?.code} options={fileContent?.options || []}>
-                        {fileContent?.taskText}
-                    </Task>
+                    {task}
                 </React.Fragment>
-                )
+            )
         })}
 
     </>)
