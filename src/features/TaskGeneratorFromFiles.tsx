@@ -59,7 +59,8 @@ export default function TaskGeneratorFromFiles(props: PropsWithChildren & { numb
         fetchFile(1, []).then(contents => setFileContents(contents))
     }, []);
 
-    if (!fileContents) {
+
+    if (fileContents.length === 0) {
         return <Skeleton count={5}></Skeleton>
     }
 
