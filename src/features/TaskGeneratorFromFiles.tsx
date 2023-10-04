@@ -1,4 +1,4 @@
-import React from "react";
+import React, { } from "react";
 import { PropsWithChildren, useEffect, useState } from "react";
 import Task from "./Task/Task";
 import Skeleton from "react-loading-skeleton";
@@ -6,12 +6,15 @@ import "./TaskGeneratorFromFiles.css"
 import ParameterizedTask from "./Task/ParameterizedTask";
 import shuffle from "../helpers/shuffle";
 
+import { v4 as uuid } from "uuid"
+
 enum TaskTypes {
     FIXED_OPTIONS = "FIXED_OPTIONS",
     PARAMETERIZED_OPTIONS = "PARAMETERIZED_OPTIONS"
 }
 
-interface Task {
+export interface Task {
+    id: string,
     title: string,
     type: TaskTypes,
     description: string,
@@ -24,7 +27,6 @@ interface Task {
 export default function TaskGeneratorFromFiles(props: PropsWithChildren & { number: number }) {
     const [tasks, setTasks] = useState<Task[]>([]);
     const number = ("0" + props.number).slice(-2);
-
 
     async function fetchFile(taskNumber: number, fileContents: Task[]) {
         let string = `${import.meta.env.VITE_BASE_PREFIX}tasks/${number}/${("0" + taskNumber).slice(-2)}.json`
@@ -40,8 +42,7 @@ export default function TaskGeneratorFromFiles(props: PropsWithChildren & { numb
                     return response.text();
                 })
                 .then(async (data) => {
-                    /** @TODO generate a UUID here? */
-                    fileContents.push({shuffleOptions: true, ...JSON.parse(data)});
+                    fileContents.push({ id: uuid(), shuffleOptions: true, ...JSON.parse(data) });
                     // Continue fetching recursively with the next taskNumber
                     await fetchFile(taskNumber + 1, fileContents);
                 })
@@ -64,24 +65,32 @@ export default function TaskGeneratorFromFiles(props: PropsWithChildren & { numb
         return <Skeleton count={5}></Skeleton>
     }
 
+    function handleFail(id: string, task: Task) {
+        setTasks(prevTasks => {
+            const index = prevTasks.findIndex(task => task.id === id)
+            const newTasks = prevTasks.slice(0, index + 1).concat([{ ...task, description: "" }]).concat(tasks.slice(index + 1))
+            return newTasks
+        })
+    }
+
     return (<>
         {tasks.map((task, key) => {
             let taskEl
             const options = task.options
 
-            if (task.shuffleOptions){
+            if (task.shuffleOptions) {
                 shuffle(options)
             }
 
             if (task.type === TaskTypes.PARAMETERIZED_OPTIONS) {
                 taskEl = <ParameterizedTask
-                    code={task.code}
-                    options={options}
+                    task={{ ...task, options }}
+                    onFail={(id: string) => handleFail(id, task)}
                 >
                     {task.taskText}
                 </ParameterizedTask>
             } else {
-                taskEl = <Task code={task?.code} options={task.options}>
+                taskEl = <Task task={task}>
                     {task.taskText}
                 </Task>
             }

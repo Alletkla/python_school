@@ -1,19 +1,14 @@
-import { PropsWithChildren } from "react";
-import Task from "./Task";
+import Task, { TaskProps } from "./Task";
 
 
-export default function ParameterizedTask(props: PropsWithChildren
-    &
-{
-    code: string,
-    options: string[],
-}) {
+export default function ParameterizedTask(props: TaskProps) {
 
-    const [code, parameters] = substituteNumbers(props.code)
-    const options = substituteOptions(props.options, parameters)
+    const [code, parameters] = substituteNumbers(props.task.code)
+    const options = substituteOptions(props.task.options, parameters)
 
     return (
-        <Task code={code} options={options}>{props.children}</Task>
+        //override with parameterized options and code
+        <Task task={{ ...props.task, options, code }} onFail={props.onFail}>{props.children}</Task>
     )
 }
 
@@ -41,7 +36,7 @@ const substituteOptions = function (options: string[], parameters: number[]) {
     })
 
     newOptions.forEach((option, key) => {
-        const [newOption, substitutions] = substituteNumbers(option)
+        const [newOption, substitutions] = substituteNumbers(option)
         newOptions[key] = newOption
     })
 

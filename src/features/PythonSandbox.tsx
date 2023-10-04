@@ -15,7 +15,7 @@ export default function PythonSandbox(props: PropsWithChildren
     & {
         className?: string
         code: string,
-        onOutput: React.Dispatch<React.SetStateAction<string | null>>
+        onOutput: (output: string) => void
         ableToRun?: boolean
     }) {
     const [code, setCode] = useState(props.code)

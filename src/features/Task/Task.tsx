@@ -1,13 +1,18 @@
 import { PropsWithChildren, useState } from "react";
 import PythonSandbox from "../PythonSandbox";
 
-export default function Task(props: PropsWithChildren
-    & {
+export type TaskProps = PropsWithChildren & {
+    task: {
+        id: string,
         code: string,
         options: string[],
-    }) {
+    },
+    onFail?: (id: string) => any
+}
+
+export default function Task(props: TaskProps) {
     const [output, setOutput] = useState<string | null>(null)
-    const [selectedOptionIndex, setSelectedOption] = useState<number>(props.options.length > 1 ? -1 : 0)
+    const [selectedOptionIndex, setSelectedOption] = useState<number>(props.task.options.length > 1 ? -1 : 0)
 
     function setSelectedOptionRestriced(key: number) {
         if (output) {
@@ -17,9 +22,9 @@ export default function Task(props: PropsWithChildren
     }
 
     function getOptions() {
-        if (props.options) {
+        if (props.task.options) {
 
-            return props.options.map((option, key) => {
+            return props.task.options.map((option, key) => {
                 return <button
                     key={key}
                     className={`btn ${getButtonColor(option, key) || "btn-secondary"} w-100 mt-2 `}
@@ -50,9 +55,16 @@ export default function Task(props: PropsWithChildren
         return
     }
 
+    function handleNewOutput(newOutput: string) {
+        if (props.task.options[selectedOptionIndex] !== newOutput) {
+            props.onFail && props.onFail(props.task.id)
+        }
+        setOutput(newOutput)
+    }
+
     return (
         <div className="row">
-            <PythonSandbox key={props.code} className="col-12 col-md" code={props.code} onOutput={setOutput} ableToRun={selectedOptionIndex !== -1}></PythonSandbox>
+            <PythonSandbox key={props.task.code} className="col-12 col-md" code={props.task.code} onOutput={handleNewOutput} ableToRun={selectedOptionIndex !== -1}></PythonSandbox>
             <div className="col-12 col-md p-2">
                 <h4>Aufgabe: </h4>
                 {props.children}
