@@ -4,7 +4,7 @@ import PythonSandbox from "../PythonSandbox";
 export default function Task(props: PropsWithChildren
     & {
         code: string,
-        options: string[]
+        options: string[],
     }) {
     const [output, setOutput] = useState<string | null>(null)
     const [selectedOptionIndex, setSelectedOption] = useState<number>(props.options.length > 1 ? -1 : 0)
@@ -18,6 +18,7 @@ export default function Task(props: PropsWithChildren
 
     function getOptions() {
         if (props.options) {
+
             return props.options.map((option, key) => {
                 return <button
                     key={key}
@@ -46,17 +47,7 @@ export default function Task(props: PropsWithChildren
     }
 
     function getFeedback() {
-        if (!output) {
-            return
-        }
-        if (props.options[selectedOptionIndex] === output) {
-            return <div>YEAH</div>
-        } else {
-            return <>
-                <div>NO. wanted Solution was:</div>
-                <div>{output}</div>
-            </>
-        }
+        return
     }
 
     return (

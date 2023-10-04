@@ -5,8 +5,8 @@ import Task from "./Task";
 export default function ParameterizedTask(props: PropsWithChildren
     &
 {
-    code: string
-    options: string[]
+    code: string,
+    options: string[],
 }) {
 
     const [code, parameters] = substituteNumbers(props.code)

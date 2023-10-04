@@ -4,6 +4,7 @@ import Task from "./Task/Task";
 import Skeleton from "react-loading-skeleton";
 import "./TaskGeneratorFromFiles.css"
 import ParameterizedTask from "./Task/ParameterizedTask";
+import shuffle from "../helpers/shuffle";
 
 enum TaskTypes {
     FIXED_OPTIONS = "FIXED_OPTIONS",
@@ -16,12 +17,12 @@ interface Task {
     description: string,
     code: string,
     taskText: string,
-    options: string[]
+    options: string[],
+    shuffleOptions?: boolean
 }
 
 export default function TaskGeneratorFromFiles(props: PropsWithChildren & { number: number }) {
-    const [fileContents, setFileContents] = useState<Task[]>([]);
-
+    const [tasks, setTasks] = useState<Task[]>([]);
     const number = ("0" + props.number).slice(-2);
 
 
@@ -40,7 +41,7 @@ export default function TaskGeneratorFromFiles(props: PropsWithChildren & { numb
                 })
                 .then(async (data) => {
                     /** @TODO generate a UUID here? */
-                    fileContents.push(JSON.parse(data));
+                    fileContents.push({shuffleOptions: true, ...JSON.parse(data)});
                     // Continue fetching recursively with the next taskNumber
                     await fetchFile(taskNumber + 1, fileContents);
                 })
@@ -56,32 +57,39 @@ export default function TaskGeneratorFromFiles(props: PropsWithChildren & { numb
 
     useEffect(() => {
         //start at Task Number:
-        fetchFile(1, []).then(contents => setFileContents(contents))
+        fetchFile(1, []).then(contents => setTasks(contents))
     }, []);
 
-
-    if (fileContents.length === 0) {
+    if (tasks.length === 0) {
         return <Skeleton count={5}></Skeleton>
     }
 
     return (<>
-        {fileContents.map((fileContent, key) => {
-            let task
+        {tasks.map((task, key) => {
+            let taskEl
+            const options = task.options
 
-            if (fileContent?.type === TaskTypes.PARAMETERIZED_OPTIONS) {
-                task = <ParameterizedTask code={fileContent?.code} options={fileContent?.options || []}>
-                    {fileContent?.taskText}
+            if (task.shuffleOptions){
+                shuffle(options)
+            }
+
+            if (task.type === TaskTypes.PARAMETERIZED_OPTIONS) {
+                taskEl = <ParameterizedTask
+                    code={task.code}
+                    options={options}
+                >
+                    {task.taskText}
                 </ParameterizedTask>
             } else {
-                task = <Task code={fileContent?.code} options={fileContent?.options || []}>
-                    {fileContent?.taskText}
+                taskEl = <Task code={task?.code} options={task.options}>
+                    {task.taskText}
                 </Task>
             }
             return (
                 <React.Fragment key={key}>
-                    <h2>{fileContent?.title}</h2>
-                    <p className="description">{fileContent?.description}</p>
-                    {task}
+                    <h2>{task?.title}</h2>
+                    <p className="description">{task?.description}</p>
+                    {taskEl}
                 </React.Fragment>
             )
         })}
