@@ -20,6 +20,8 @@ export default function PythonSandbox(props: PropsWithChildren
     }) {
     const [code, setCode] = useState(props.code)
     const [cursorPosition, setCursorPosition] = useState(0)
+    const [output, setOutput] = useState<string | null>(null)
+    const [status, setStatus] = useState<string | null>(null)
     const codeArea = useRef<HTMLPreElement>(null)
     const canvasRef = useRef<HTMLDivElement>(null)
     const outputRef = useRef<HTMLPreElement>(null)
@@ -31,20 +33,18 @@ export default function PythonSandbox(props: PropsWithChildren
         restoreCursorPosition(cursorPosition);
     }, [code]);
 
+    function onOutputSet(text: string) {
+        setOutput(text)
+        props.onOutput(text)
+    }
+
     /**
      * Called when text would be send to console
      * @param text 
      */
     function outf(text: string) {
         text = text.trimEnd()
-        if (outputRef.current) {
-            outputRef.current.innerHTML += text;
-        }
-        if (outputRef.current) {
-            props.onOutput(outputRef.current.innerHTML)
-        } else {
-            props.onOutput("")
-        }
+        onOutputSet(text)
     }
 
     // Builtin read function
@@ -58,15 +58,6 @@ export default function PythonSandbox(props: PropsWithChildren
     function runPythonCode() {
         const code = codeArea.current?.textContent
 
-        // Clear previous output
-        if (outputRef.current) {
-            outputRef.current.innerText = '';
-        }
-
-        if (canvasRef.current) {
-            canvasRef.current.innerText = ''
-        }
-
         Sk.configure({ output: outf, read: builtinRead });
         (Sk.TurtleGraphics || (Sk.TurtleGraphics = {})).target = 'mycanvas';
 
@@ -76,14 +67,19 @@ export default function PythonSandbox(props: PropsWithChildren
 
         promise.then(
             (mod: any) => {
-                if (statusRef.current) {
-                    statusRef.current.innerText = '>> Python code executed successfully';
+                //Due to closures and JS handling async events we need to wrap this into another function.
+                //Since the function (and its inner values) is evaluated on runtime. 
+                //Without the function wrapper output would have the value before the promise resolved, since the code got evaluated back then
+                return () => {
+                    setStatus('>> Python code executed successfully')
+                    console.log("OUTPUT IN PROMISE", output)
+                    if (output === null) {
+                        onOutputSet("")
+                    }
                 }
             },
             (err: Error) => {
-                if (statusRef.current) {
-                    statusRef.current.innerText = err.toString();
-                }
+                setStatus(err.toString())
             }
         );
     }
@@ -231,8 +227,8 @@ export default function PythonSandbox(props: PropsWithChildren
             <button className='btn btn-primary w-100' type="button" onClick={runPythonCode} disabled={!ableToRun}>Ausführen</button>
             <div id="mycanvas"></div>
             <h4>Console:</h4>
-            <pre className="bg-light text-dark rounded p-3" ref={outputRef}>{ableToRun ? "... Ausführen Klicken für Ausgabe" : "Erst Antwort auswählen"}</pre>
-            <pre ref={statusRef}></pre>
+            <pre className="bg-light text-dark rounded p-3" ref={outputRef}>{ableToRun ? output || "... Ausführen Klicken für Ausgabe" : "Erst Antwort auswählen"}</pre>
+            <pre ref={statusRef}>{status}</pre>
         </div>
     );
 }

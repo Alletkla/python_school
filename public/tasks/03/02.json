@@ -6,9 +6,11 @@
     "taskText": "Welche Ausgabe erzeugt der Code:",
     "options": [
         {
+            "label": "",
             "value": "Ich bin kein Mathegenie"
         },
         {
+            "label": "",
             "value": "Ich bin ein Mathegenie"
         }
     ]

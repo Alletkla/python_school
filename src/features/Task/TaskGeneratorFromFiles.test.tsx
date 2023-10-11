@@ -1,6 +1,5 @@
 import { substituteNumbers, substituteOptions } from "../TaskGeneratorFromFiles"
 
-
 describe("substituteNumbers()", () => {
     test("Should replace one Placeholders correctly", () => {
         const [newCode, parameters] = substituteNumbers("print(@@{number;0;9})")
@@ -25,10 +24,10 @@ describe("substituteNumbers()", () => {
     })
 })
 
-describe("substitute", () => {
+describe("substituteRef", () => {
     test("Should substitute with given parameters", () => {
         const REPLACE_WITH = 5
-        expect(substituteOptions([{id: "a", value: "print(@@{ref:0})"}], [REPLACE_WITH])).toEqual([{id: "a", value:`print(${REPLACE_WITH})`}])
+        expect(substituteOptions([{id: "a", label:"print(@@{ref:0})", value: "print(@@{ref:0})"}], [REPLACE_WITH])).toEqual([{id: "a", value:`print(${REPLACE_WITH})`}])
     })
 })
 

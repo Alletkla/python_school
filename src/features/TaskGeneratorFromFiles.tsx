@@ -39,7 +39,7 @@ export default function TaskGeneratorFromFiles(props: PropsWithChildren & { numb
             await fetch(url)
                 .then((response) => {
                     if (!response.ok) {
-                        // make the promise be rejected if we didn't get a 2xx response
+                        // make the promise be rejected if we didn't get a 2xx response --> No Task file exists
                         throw new Error("File not Found");
                     }
                     return response.text();
@@ -53,10 +53,13 @@ export default function TaskGeneratorFromFiles(props: PropsWithChildren & { numb
                             ...parsedTask,
                             id: uuid(),
                             options: parsedTask.options.map(option => {
-                                if (!option.value) {
+                                if (option.value === undefined || option.value === null) {
                                     throw new Error("Option Value not defined, check Task Format")
                                 }
-                                return { id: uuid(), value: option.value }
+                                if (!option.label) {
+                                    option.label = option.value
+                                }
+                                return { ...option, id: uuid() }
                             })
                         });
                     // Continue fetching recursively with the next taskNumber
@@ -140,12 +143,17 @@ export default function TaskGeneratorFromFiles(props: PropsWithChildren & { numb
 const substituteOptions = function (options: Option[], parameters: number[]) {
     const newOptions = [...options]
     newOptions.forEach((option, key) => {
-        newOptions[key] = { id: option.id, value: substituteRefs(option.value, parameters) }
+        newOptions[key] = { id: option.id, label:substituteRefs(option.label, parameters), value: substituteRefs(option.value, parameters) }
     })
 
+    /**
+     * @TODO Although it should work in all cases since random numbers are only generated when there is no reff to the task itself
+     * not a good way to seperate labels from values.
+     */
     newOptions.forEach((option, key) => {
-        const [newOption, substitutions] = substituteNumbers(option.value)
-        newOptions[key] = { id: option.id, value: newOption }
+        const [newOptionVal, substitutionsVal] = substituteNumbers(option.value)
+        const [newOptionLabels, substitionsLabel] = substituteNumbers(option.label)
+        newOptions[key] = { id: option.id, label: newOptionLabels, value: newOptionVal }
     })
 
     return newOptions

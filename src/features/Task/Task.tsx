@@ -11,46 +11,43 @@ export type TaskProps = PropsWithChildren & {
 }
 export type Option = {
     id: string,
+    label: string,
     value: string
 }
 
 export default function Task(props: TaskProps) {
-    const [output, setOutput] = useState<string | null>(null)
+    const [rightOptionId, setRightOptionId] = useState<string| null>(null)
     const [selectedOptionId, setSelectedOptionId] = useState<string>(props.task.options.length > 1 ? "" : props.task.options[0].id)
 
     function setSelectedOptionRestriced(id: string) {
-        if (output) {
+        if (rightOptionId !== null) {
             return
         }
         setSelectedOptionId(id)
     }
 
-    function getOptions() {
+    function renderOptions() {
         if (props.task.options) {
 
             return props.task.options.map(option => {
                 return <button
                     key={option.id}
-                    className={`btn ${getButtonColor(option.value, option.id) || "btn-secondary"} w-100 mt-2 `}
+                    className={`btn ${getButtonColor(option.id) || "btn-secondary"} w-100 mt-2 `}
                     onClick={() => setSelectedOptionRestriced(option.id)}
-                >{option.value}</button>
+                >{option.label}</button>
             })
         }
     }
 
-    function getButtonColor(option: string, id: string) {
-        if (!output) {
-            if (selectedOptionId === id) {
-                return "btn-primary"
-            } else {
-                return
-            }
-        }
-
-        if (option === output) {
+    function getButtonColor(id: string) {
+        if (rightOptionId === id) {
             return "btn-success"
         }
         if (selectedOptionId === id) {
+            if (rightOptionId === null){
+                //no right option set yet --> mark as selected
+                return "btn-primary"
+            }
             return "btn-danger"
         }
     }
@@ -60,12 +57,14 @@ export default function Task(props: TaskProps) {
     }
 
     function handleNewOutput(newOutput: string) {
-        const wasSelected = props.task.options.find(option => option.value === newOutput && option.id === selectedOptionId)
+        const rightOptionIndex = props.task.options.findIndex(option => option.value === newOutput)
+        const rightOptionId = props.task.options[rightOptionIndex].id
 
-        if (!wasSelected) {
+        setRightOptionId(rightOptionId)
+
+        if (rightOptionId !== selectedOptionId) {
             props.onFail && props.onFail(props.task.id)
         }
-        setOutput(newOutput)
     }
 
     return (
@@ -74,7 +73,7 @@ export default function Task(props: TaskProps) {
             <div className="col-12 col-md p-2">
                 <h4>Aufgabe: </h4>
                 {props.children}
-                <div className="d-flex flex-wrap">{getOptions()}</div>
+                <div className="d-flex flex-wrap">{renderOptions()}</div>
                 {/* {getFeedback()} */}
             </div>
         </div>

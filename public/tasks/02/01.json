@@ -6,15 +6,19 @@
     "taskText": "Überlege dir, welche Ausgabe erzeugt dieser Code. Deine Antwort wird nach dem Ausführen geprüft.",
     "options": [
         {
+            "label": "",
             "value": "@@{ref:0}"
         },
         {
+            "label": "",
             "value": "@@{ref:1}"
         },
         {
+            "label": "",
             "value": "@@{number;-50;50}"
         },
         {
+            "label": "",
             "value": "@@{number;-50;50}"
         }
     ]
