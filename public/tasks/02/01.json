@@ -1,8 +1,8 @@
 {
     "title": "Variablen Einführung",
     "type": "PARAMETERIZED_OPTIONS",
-    "description": "Variablen sind \"Zwischenspeicher\" für Inhalte. Python erzeugt Variablen automatisch für dich. Im folgenden Code ist a zum Beispiel eine solche Variable. Variablen können beliebig oft überschrieben werden. Dabei gilt immer der zuletzt zugewiesene Wert.",
-    "code": "# lies: a wird der Wert @@{number;-50;50} zugewiesen\na = @@{ref:0}\n# lies: a wird der Wert @@{number;-50;50} zugewiesen\na = @@{ref:1}\n\n# Ausgabe:\nprint(a)",
+    "description": "Variablen sind \"Zwischenspeicher\" für Inhalte. Python erzeugt Variablen automatisch für dich. Im folgenden Code ist a zum Beispiel eine solche Variable.",
+    "code": "# lies: a wird der Wert @@{number;-50;50} zugewiesen\na = @@{ref:0}\n\n# Ausgabe:\nprint(a)",
     "taskText": "Überlege dir, welche Ausgabe erzeugt dieser Code. Deine Antwort wird nach dem Ausführen geprüft.",
     "options": [
         {
@@ -11,7 +11,8 @@
         },
         {
             "label": "",
-            "value": "@@{ref:1}"
+            "value": "a",
+            "feedback": "a steht hier für eine Variable. Tauchen Variablen im Code auf, wird für sie der zuletzt zugewiesene Wert eingesetzt."
         },
         {
             "label": "",

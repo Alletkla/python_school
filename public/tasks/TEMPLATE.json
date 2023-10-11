@@ -1,8 +1,18 @@
 {
     "title": "",
-    "type": "FIXED_OPTIONS",
+    "type": "PARAMETERIZED_OPTIONS",
     "description": "",
     "code":"",
     "taskText": "",
-    "options": []
+    "options": [
+        {
+            "label": "",
+            "value": "",
+            "feedback": ""
+        },
+        {
+            "label": "",
+            "value": ""
+        }
+    ]
 }

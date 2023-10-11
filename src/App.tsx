@@ -6,7 +6,7 @@ export const TaskContext = createContext<Task[]>([])
 
 function App() {
 
-  const taskNumbers =  [3]
+  const taskNumbers =  [2]
 
   return (
     <div className="container mx-auto">

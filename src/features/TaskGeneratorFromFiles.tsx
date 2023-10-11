@@ -129,7 +129,7 @@ export default function TaskGeneratorFromFiles(props: PropsWithChildren & { numb
             return (
                 <React.Fragment key={task.id}>
                     <h2>{task?.title}</h2>
-                    <p className="description">{task?.description}</p>
+                    <p className="description fs-5">{task?.description}</p>
                     <Task task={task} onFail={() => handleFail(task.id, task)}>
                         {task.taskText}
                     </Task>
@@ -143,7 +143,7 @@ export default function TaskGeneratorFromFiles(props: PropsWithChildren & { numb
 const substituteOptions = function (options: Option[], parameters: number[]) {
     const newOptions = [...options]
     newOptions.forEach((option, key) => {
-        newOptions[key] = { id: option.id, label:substituteRefs(option.label, parameters), value: substituteRefs(option.value, parameters) }
+        newOptions[key] = {...option, id: option.id, label:substituteRefs(option.label, parameters), value: substituteRefs(option.value, parameters) }
     })
 
     /**
@@ -153,7 +153,7 @@ const substituteOptions = function (options: Option[], parameters: number[]) {
     newOptions.forEach((option, key) => {
         const [newOptionVal, substitutionsVal] = substituteNumbers(option.value)
         const [newOptionLabels, substitionsLabel] = substituteNumbers(option.label)
-        newOptions[key] = { id: option.id, label: newOptionLabels, value: newOptionVal }
+        newOptions[key] = {...option, id: option.id, label: newOptionLabels, value: newOptionVal }
     })
 
     return newOptions

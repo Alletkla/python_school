@@ -13,10 +13,11 @@ export type Option = {
     id: string,
     label: string,
     value: string
+    feedback?: string,
 }
 
 export default function Task(props: TaskProps) {
-    const [rightOptionId, setRightOptionId] = useState<string| null>(null)
+    const [rightOptionId, setRightOptionId] = useState<string | null>(null)
     const [selectedOptionId, setSelectedOptionId] = useState<string>(props.task.options.length > 1 ? "" : props.task.options[0].id)
 
     function setSelectedOptionRestriced(id: string) {
@@ -44,7 +45,7 @@ export default function Task(props: TaskProps) {
             return "btn-success"
         }
         if (selectedOptionId === id) {
-            if (rightOptionId === null){
+            if (rightOptionId === null) {
                 //no right option set yet --> mark as selected
                 return "btn-primary"
             }
@@ -52,13 +53,28 @@ export default function Task(props: TaskProps) {
         }
     }
 
-    function getFeedback() {
-        return
+    function renderFeedback() {
+        //Question was answered and Code ran
+        if (rightOptionId !== null) {
+            const selectedOption = props.task.options.find(option => option.id === selectedOptionId)
+            if (selectedOption?.feedback) {
+                return (
+                    <div>
+                        <div className="card mt-3 text-bg-info">
+                            <div className="card-header">Feedback:</div>
+                            <div className="card-body">{selectedOption?.feedback}</div>
+                        </div>
+                    </div>
+                )
+            } else {
+                return <></>
+            }
+        }
     }
 
     function handleNewOutput(newOutput: string) {
         const rightOptionIndex = props.task.options.findIndex(option => option.value === newOutput)
-        const rightOptionId = props.task.options[rightOptionIndex].id
+        const rightOptionId = props.task.options[rightOptionIndex]?.id
 
         setRightOptionId(rightOptionId)
 
@@ -74,7 +90,7 @@ export default function Task(props: TaskProps) {
                 <h4>Aufgabe: </h4>
                 {props.children}
                 <div className="d-flex flex-wrap">{renderOptions()}</div>
-                {/* {getFeedback()} */}
+                {renderFeedback()}
             </div>
         </div>
 

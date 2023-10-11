@@ -1,13 +1,28 @@
 {
-    "title": "Variablen Aufgabe",
+    "title": "Variablen Einführung",
     "type": "PARAMETERIZED_OPTIONS",
-    "description": "",
-    "code": "a \nprint(a)",
-    "taskText": "Weise der Variablen folgenden Wert zu: (Führe den Code aus, um dein Ergebnis zu überprüfen.)",
+    "description": "Wie du schon im vorherigen Beispiel sicher mitbekommen hast, wird Code immer von oben nach unten ausgeführt. Das können wir nutzen und Variablen beliebig oft überschreiben. Dabei gilt immer der zuletzt zugewiesene Wert.",
+    "code": "# lies: a wird der Wert @@{number;-50;50} zugewiesen\na = @@{ref:0}\n# lies: a wird der Wert @@{number;-50;50} zugewiesen\na = @@{ref:1}\n\n# Ausgabe:\nprint(a)",
+    "taskText": "Überlege dir, welche Ausgabe erzeugt dieser Code. Deine Antwort wird nach dem Ausführen geprüft.",
     "options": [
         {
             "label": "",
-            "value": "@@{number;-50;50}"
+            "value": "@@{ref:0}",
+            "feedback": "Überlege noch einmal oder lies nach, in welcher Reihenfolge Code in Python ausgeführt wird."
+        },
+        {
+            "label": "",
+            "value": "@@{ref:1}"
+        },
+        {
+            "label": "",
+            "value": "@@{number;51;100}",
+            "feedback": "Diese von dir ausgewählte Zahl taucht nicht im Code auf, kann also nicht zugewiesen worden sein."
+        },
+        {
+            "label": "",
+            "value": "@@{number;51;100}",
+            "feedback": "Diese von dir ausgewählte Zahl taucht nicht im Code auf, kann also nicht zugewiesen worden sein."
         }
     ]
 }
