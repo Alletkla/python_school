@@ -1,8 +1,15 @@
 {
     "title": "Verzweigungen",
-    "type": "FIXED_OPTIONS",
+    "type": "PARAMETERIZED_OPTIONS",
     "description": "Selten wird ein Programm einfach Zeile für Zeile von oben nach unten ausgeführt. Oft finden Entscheidungen statt. Schauen wir uns einmal an, wie das in Python funktioniert:\n\nHierfür müssen wir eine neue Vokabel lernen: if\nein if wird immer gefolgt von einer Bedingung und einem Doppelpunkt. Ein Beispiel siehst du in der CodeBox unter diesem Text.\n\nDer Doppelpunkt ist dabei essentiell, denn er zeigt an, dass der eingerückte Codeblock ausgeführt werden soll, wenn die Bedingung \"wahr\" ist.",
-    "code":"if 3<5:\n  print(\"Ja\")",
+    "code": "if @@{number;0;20} < @@{number;0;20}:\n  print(\"Ja\")",
     "taskText": "Welche Ausgabe erzeugt der Code:",
-    "options": ["Ja", "keine"]
+    "options": [
+        {
+            "value": "Ja"
+        },
+        {
+            "value": "keine"
+        }
+    ]
 }

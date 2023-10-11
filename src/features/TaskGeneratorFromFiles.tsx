@@ -1,9 +1,8 @@
 import React, { } from "react";
 import { PropsWithChildren, useEffect, useState } from "react";
-import Task from "./Task/Task";
+import Task, { Option } from "./Task/Task";
 import Skeleton from "react-loading-skeleton";
 import "./TaskGeneratorFromFiles.css"
-import ParameterizedTask from "./Task/ParameterizedTask";
 import shuffle from "../helpers/shuffle";
 
 import { v4 as uuid } from "uuid"
@@ -20,12 +19,16 @@ export interface Task {
     description: string,
     code: string,
     taskText: string,
-    options: string[],
+    options: Option[],
     shuffleOptions?: boolean
 }
-
+/**
+ * @TODO onBuild put all JSON Files in one big one. Rename the files in alphabetical order in the json so they can be handled in
+ * clear names and will still be available without 404 on runtime
+ */
 export default function TaskGeneratorFromFiles(props: PropsWithChildren & { number: number }) {
     const [tasks, setTasks] = useState<Task[]>([]);
+    const [taskBlueprints, setTaskBlueprints] = useState<Task[]>([])
     const number = ("0" + props.number).slice(-2);
 
     async function fetchFile(taskNumber: number, fileContents: Task[]) {
@@ -42,7 +45,20 @@ export default function TaskGeneratorFromFiles(props: PropsWithChildren & { numb
                     return response.text();
                 })
                 .then(async (data) => {
-                    fileContents.push({ id: uuid(), shuffleOptions: true, ...JSON.parse(data) });
+                    const parsedTask = JSON.parse(data) as Task
+
+                    fileContents.push(
+                        {
+                            shuffleOptions: true,
+                            ...parsedTask,
+                            id: uuid(),
+                            options: parsedTask.options.map(option => {
+                                if (!option.value) {
+                                    throw new Error("Option Value not defined, check Task Format")
+                                }
+                                return { id: uuid(), value: option.value }
+                            })
+                        });
                     // Continue fetching recursively with the next taskNumber
                     await fetchFile(taskNumber + 1, fileContents);
                 })
@@ -58,7 +74,11 @@ export default function TaskGeneratorFromFiles(props: PropsWithChildren & { numb
 
     useEffect(() => {
         //start at Task Number:
-        fetchFile(1, []).then(contents => setTasks(contents))
+        fetchFile(1, [])
+            .then(contents => { setTaskBlueprints(contents); return contents })
+            .then(contents => {
+                setTasks(preComputeTasks(contents))
+            })
     }, []);
 
     if (tasks.length === 0) {
@@ -68,14 +88,22 @@ export default function TaskGeneratorFromFiles(props: PropsWithChildren & { numb
     function handleFail(id: string, task: Task) {
         setTasks(prevTasks => {
             const index = prevTasks.findIndex(task => task.id === id)
-            const newTasks = prevTasks.slice(0, index + 1).concat([{ ...task, description: "" }]).concat(tasks.slice(index + 1))
-            return newTasks
+            const blueprint = taskBlueprints.find(blueprint => blueprint.id === id)
+            if (blueprint) {
+                const newId = uuid()
+                blueprint.id = newId
+
+                return prevTasks.slice(0, index + 1).concat(preComputeTasks([{ ...blueprint, id: newId, description: "" }])).concat(tasks.slice(index + 1))
+            }
+            console.warn("no Blueprint found for task")
+            return prevTasks
         })
     }
 
-    return (<>
-        {tasks.map((task, key) => {
-            let taskEl
+    // console.log(tasks)
+
+    function preComputeTasks(tasks: Task[]) {
+        return tasks.map((task) => {
             const options = task.options
 
             if (task.shuffleOptions) {
@@ -83,25 +111,108 @@ export default function TaskGeneratorFromFiles(props: PropsWithChildren & { numb
             }
 
             if (task.type === TaskTypes.PARAMETERIZED_OPTIONS) {
-                taskEl = <ParameterizedTask
-                    task={{ ...task, options }}
-                    onFail={(id: string) => handleFail(id, task)}
-                >
-                    {task.taskText}
-                </ParameterizedTask>
-            } else {
-                taskEl = <Task task={task}>
-                    {task.taskText}
-                </Task>
+                const [codeWithRefs, parameters] = substituteNumbers(task.code)
+                const code = substituteRefs(codeWithRefs, parameters)
+                const options = substituteOptions(task.options, parameters)
+
+                task = { ...task, options, code }
             }
+            return { ...task }
+        })
+    }
+
+    return (<>
+        {tasks.map((task) => {
             return (
-                <React.Fragment key={key}>
+                <React.Fragment key={task.id}>
                     <h2>{task?.title}</h2>
                     <p className="description">{task?.description}</p>
-                    {taskEl}
+                    <Task task={task} onFail={() => handleFail(task.id, task)}>
+                        {task.taskText}
+                    </Task>
                 </React.Fragment>
             )
         })}
 
     </>)
 }
+
+const substituteOptions = function (options: Option[], parameters: number[]) {
+    const newOptions = [...options]
+    newOptions.forEach((option, key) => {
+        newOptions[key] = { id: option.id, value: substituteRefs(option.value, parameters) }
+    })
+
+    newOptions.forEach((option, key) => {
+        const [newOption, substitutions] = substituteNumbers(option.value)
+        newOptions[key] = { id: option.id, value: newOption }
+    })
+
+    return newOptions
+}
+
+const substituteRefs = function (code: string, parameters: number[]) {
+    let reg = new RegExp("@@{ref:(.*?)}", "g")
+    let matches = [...code.matchAll(reg)]
+
+    let lastMatchedIndex = 0
+    let newOption = ""
+    matches.forEach(match => {
+        const ref = parseInt(match[1])
+
+        const startIndex = match.index || 0
+        const insertedParameter = parameters[ref]
+
+        newOption += code.substring(lastMatchedIndex, startIndex) + insertedParameter
+        lastMatchedIndex = startIndex + match[0].length
+    })
+
+    //add all missing characters from lastMatchedIndex to end
+    newOption += code.substring(lastMatchedIndex)
+    return newOption
+}
+
+const substituteNumbers = function (code: string): [string, number[]] {
+    let replacedCode = ""
+
+    let reg = new RegExp("@@{number;?(.*?)}", "g")
+    let matches = [...code.matchAll(reg)]
+
+
+    let lastMatchedIndex = 0
+    const insertedParameters: number[] = []
+
+    matches.forEach(match => {
+        const parameters = match[1].split(";")
+        if (parameters.length < 2) {
+            parameters[0] = "-100"
+            parameters[1] = "100"
+        }
+
+        const startIndex = match.index || 0
+        const insertedParameter = getRandomInt(parseInt(parameters[0]), parseInt(parameters[1]))
+
+        replacedCode += code.substring(lastMatchedIndex, startIndex) + insertedParameter
+        lastMatchedIndex = startIndex + match[0].length
+        insertedParameters.push(insertedParameter)
+    })
+    replacedCode += code.substring(lastMatchedIndex)
+
+    return [replacedCode, insertedParameters]
+}
+
+/**
+ * Returns a random integer between min (inclusive) and max (inclusive).
+ * The value is no lower than min (or the next integer greater than min
+ * if min isn't an integer) and no greater than max (or the next integer
+ * lower than max if max isn't an integer).
+ * Using Math.round() will give you a non-uniform distribution!
+ */
+function getRandomInt(min: number, max: number) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+
+export { substituteNumbers, substituteOptions }

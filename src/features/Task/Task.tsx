@@ -5,38 +5,42 @@ export type TaskProps = PropsWithChildren & {
     task: {
         id: string,
         code: string,
-        options: string[],
+        options: Option[],
     },
     onFail?: (id: string) => any
+}
+export type Option = {
+    id: string,
+    value: string
 }
 
 export default function Task(props: TaskProps) {
     const [output, setOutput] = useState<string | null>(null)
-    const [selectedOptionIndex, setSelectedOption] = useState<number>(props.task.options.length > 1 ? -1 : 0)
+    const [selectedOptionId, setSelectedOptionId] = useState<string>(props.task.options.length > 1 ? "" : props.task.options[0].id)
 
-    function setSelectedOptionRestriced(key: number) {
+    function setSelectedOptionRestriced(id: string) {
         if (output) {
             return
         }
-        setSelectedOption(key)
+        setSelectedOptionId(id)
     }
 
     function getOptions() {
         if (props.task.options) {
 
-            return props.task.options.map((option, key) => {
+            return props.task.options.map(option => {
                 return <button
-                    key={key}
-                    className={`btn ${getButtonColor(option, key) || "btn-secondary"} w-100 mt-2 `}
-                    onClick={() => setSelectedOptionRestriced(key)}
-                >{option}</button>
+                    key={option.id}
+                    className={`btn ${getButtonColor(option.value, option.id) || "btn-secondary"} w-100 mt-2 `}
+                    onClick={() => setSelectedOptionRestriced(option.id)}
+                >{option.value}</button>
             })
         }
     }
 
-    function getButtonColor(option: string, key: number) {
+    function getButtonColor(option: string, id: string) {
         if (!output) {
-            if (selectedOptionIndex === key) {
+            if (selectedOptionId === id) {
                 return "btn-primary"
             } else {
                 return
@@ -46,7 +50,7 @@ export default function Task(props: TaskProps) {
         if (option === output) {
             return "btn-success"
         }
-        if (selectedOptionIndex === key) {
+        if (selectedOptionId === id) {
             return "btn-danger"
         }
     }
@@ -56,7 +60,9 @@ export default function Task(props: TaskProps) {
     }
 
     function handleNewOutput(newOutput: string) {
-        if (props.task.options[selectedOptionIndex] !== newOutput) {
+        const wasSelected = props.task.options.find(option => option.value === newOutput && option.id === selectedOptionId)
+
+        if (!wasSelected) {
             props.onFail && props.onFail(props.task.id)
         }
         setOutput(newOutput)
@@ -64,7 +70,7 @@ export default function Task(props: TaskProps) {
 
     return (
         <div className="row">
-            <PythonSandbox key={props.task.code} className="col-12 col-md" code={props.task.code} onOutput={handleNewOutput} ableToRun={selectedOptionIndex !== -1}></PythonSandbox>
+            <PythonSandbox key={props.task.code} className="col-12 col-md" code={props.task.code} onOutput={handleNewOutput} ableToRun={!!selectedOptionId}></PythonSandbox>
             <div className="col-12 col-md p-2">
                 <h4>Aufgabe: </h4>
                 {props.children}
