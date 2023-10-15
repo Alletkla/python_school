@@ -48,7 +48,7 @@ export default function PythonSandbox(props: PropsWithChildren
     function onOutputSet(text: string) {
         let newOutput = ""
         setOutput(prev => {
-            if (!prev) {
+            if (!prev || status !== null) {
                 newOutput = text;
             } else {
                 newOutput = prev + "\n" + text
@@ -83,7 +83,7 @@ export default function PythonSandbox(props: PropsWithChildren
         const promise = Sk.misceval.asyncToPromise(function () {
             return Sk.importMainWithBody('<stdin>', false, code, true);
         });
-
+        setStatus("")
         promise.then(
             (mod: any) => {
                 //Due to closures and JS handling async events we need to wrap this into another function.
