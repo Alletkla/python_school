@@ -1,4 +1,4 @@
-import { FormEvent, PropsWithChildren, useEffect, useRef, useState } from 'react';
+import { FormEvent, KeyboardEvent, PropsWithChildren, useEffect, useRef, useState } from 'react';
 import "./PythonSandbox.css"
 import '../assets/js/skulpt.min.js'; // Replace with your actual path
 import '../assets/js/skulpt-stdlib.js'; // Replace with your actual path
@@ -230,6 +230,17 @@ export default function PythonSandbox(props: PropsWithChildren
         setCode(e.currentTarget.textContent || "")
     }
 
+    function handleKeyDown(e: KeyboardEvent<HTMLElement>) {
+        if (e.key === "Tab") {
+            const cursorPos = getCurrentCursorPosition(e.currentTarget.parentElement?.id || "")
+            e.preventDefault()
+            const codeToIndex = e.currentTarget.textContent?.substring(0,cursorPos) || ""
+            const newCode = codeToIndex + "  " + e.currentTarget.textContent?.substring(cursorPos)
+            setCursorPosition(cursorPos+2)
+            setCode(newCode)
+        }
+    }
+
     return (
         <div className={`theme-atom-one-light ${props.className}`}>
             <div className='hljs codeWrapper p-2 border rounded text-nowrap overflow-scroll d-flex fs-6'>
@@ -237,7 +248,7 @@ export default function PythonSandbox(props: PropsWithChildren
                     {getLineNumbering(code)}
                 </pre>
                 <pre id="code" className='hide-outline' spellCheck={false} >
-                    <code ref={codeArea} className='hide-outline' contentEditable={true} dangerouslySetInnerHTML={{ __html: highlighted }} onInput={handleInput}>
+                    <code ref={codeArea} className='hide-outline' contentEditable={true} dangerouslySetInnerHTML={{ __html: highlighted }} onInput={handleInput} onKeyDown={handleKeyDown}>
                     </code>
 
                 </pre>
