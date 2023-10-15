@@ -33,9 +33,28 @@ export default function PythonSandbox(props: PropsWithChildren
         restoreCursorPosition(cursorPosition);
     }, [code]);
 
+    //Not good practice, but necessary, when encapsulating output in Sandbox
+    //since react queues state changes, and output is not updated fast enough
+    //and state-setter are not allowed inside each other
+    //Alternative would be lifting state up, what is not desired
+    useEffect(() => {
+        if (output === null) {
+            return
+        }
+
+        props.onOutput(output)
+    }, [output])
+
     function onOutputSet(text: string) {
-        setOutput(text)
-        props.onOutput(text)
+        let newOutput = ""
+        setOutput(prev => {
+            if (!prev) {
+                newOutput = text;
+            } else {
+                newOutput = prev + "\n" + text
+            }
+            return newOutput
+        })
     }
 
     /**
