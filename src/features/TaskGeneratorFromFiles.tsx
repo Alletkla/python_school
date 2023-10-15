@@ -56,9 +56,6 @@ export default function TaskGeneratorFromFiles(props: PropsWithChildren & { numb
                                 if (option.value === undefined || option.value === null) {
                                     throw new Error("Option Value not defined, check Task Format")
                                 }
-                                if (!option.label) {
-                                    option.label = option.value
-                                }
                                 return { ...option, id: uuid() }
                             })
                         });
@@ -128,10 +125,10 @@ export default function TaskGeneratorFromFiles(props: PropsWithChildren & { numb
         {tasks.map((task) => {
             return (
                 <React.Fragment key={task.id}>
-                    <h2>{task?.title}</h2>
-                    <p className="description fs-5">{task?.description}</p>
+                    <h2>{props.number} - {task?.title}</h2>
+                    <p className="pre-wrap fs-5">{task?.description}</p>
                     <Task task={task} onFail={() => handleFail(task.id, task)}>
-                        {task.taskText}
+                        <div className="pre-wrap">{task.taskText}</div>
                     </Task>
                 </React.Fragment>
             )
@@ -143,7 +140,10 @@ export default function TaskGeneratorFromFiles(props: PropsWithChildren & { numb
 const substituteOptions = function (options: Option[], parameters: number[]) {
     const newOptions = [...options]
     newOptions.forEach((option, key) => {
-        newOptions[key] = {...option, id: option.id, label:substituteRefs(option.label, parameters), value: substituteRefs(option.value, parameters) }
+        newOptions[key] = {...option, id: option.id, label:substituteRefs(option.label, parameters), value: substituteRefs(option.value, parameters)}
+        if (option.feedback){
+            newOptions[key] = {...newOptions[key], feedback: substituteRefs(option.feedback, parameters) }
+        }
     })
 
     /**
@@ -152,14 +152,18 @@ const substituteOptions = function (options: Option[], parameters: number[]) {
      */
     newOptions.forEach((option, key) => {
         const [newOptionVal, substitutionsVal] = substituteNumbers(option.value)
-        const [newOptionLabels, substitionsLabel] = substituteNumbers(option.label)
-        newOptions[key] = {...option, id: option.id, label: newOptionLabels, value: newOptionVal }
+        newOptions[key] = {...option, id: option.id, value: newOptionVal }
     })
 
     return newOptions
 }
 
-const substituteRefs = function (code: string, parameters: number[]) {
+const substituteRefs = function (code: string | undefined, parameters: number[]) {
+
+    if (code === undefined){
+        return ""
+    }
+
     let reg = new RegExp("@@{ref:(.*?)}", "g")
     let matches = [...code.matchAll(reg)]
 

@@ -11,7 +11,7 @@ export type TaskProps = PropsWithChildren & {
 }
 export type Option = {
     id: string,
-    label: string,
+    label?: string,
     value: string
     feedback?: string,
 }
@@ -33,9 +33,9 @@ export default function Task(props: TaskProps) {
             return props.task.options.map(option => {
                 return <button
                     key={option.id}
-                    className={`btn ${getButtonColor(option.id) || "btn-secondary"} w-100 mt-2 `}
+                    className={`pre-wrap btn ${getButtonColor(option.id) || "btn-secondary"} w-100 mt-2 `}
                     onClick={() => setSelectedOptionRestriced(option.id)}
-                >{option.label}</button>
+                >{option.label || option.value}</button>
             })
         }
     }
@@ -55,14 +55,14 @@ export default function Task(props: TaskProps) {
 
     function renderFeedback() {
         //Question was answered and Code ran
-        if (rightOptionId !== null) {
+        if (rightOptionId !== null && rightOptionId !== selectedOptionId) {
             const selectedOption = props.task.options.find(option => option.id === selectedOptionId)
             if (selectedOption?.feedback) {
                 return (
                     <div>
                         <div className="card mt-3 text-bg-info">
                             <div className="card-header">Feedback:</div>
-                            <div className="card-body">{selectedOption?.feedback}</div>
+                            <div className="pre-wrap card-body">{selectedOption?.feedback}</div>
                         </div>
                     </div>
                 )
