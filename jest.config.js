@@ -6,7 +6,7 @@ export default {
     // Jest transformations -- this adds support for TypeScript
     // using ts-jest
     transform: {
-        "^.+\\.tsx?$": "babel-jest"
+        "^.+\\.tsx?$": ['babel-jest', { configFile: './babel.config.cjs' }], 
     },
 
     // Runs special logic, such as cleaning up components
@@ -34,5 +34,7 @@ export default {
     testMatch: ['<rootDir>/src/**/?(*.)test.{ts,tsx}'],
 
     // Module file extensions for importing
-    moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"]
+    moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
+
+    
 };
