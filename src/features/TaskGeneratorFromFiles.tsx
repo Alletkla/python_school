@@ -34,7 +34,7 @@ export default function TaskGeneratorFromFiles(props: PropsWithChildren & { numb
     async function fetchFile(taskNumber: number, fileContents: Task[]) {
         let string = `${import.meta.env.VITE_BASE_PREFIX}tasks/${number}/${("0" + taskNumber).slice(-2)}.json`
         let url = new URL(string, import.meta.url).href
-        if (url && taskNumber < 5) {
+        if (url && taskNumber < 100) {
             // Use the fetch API to read the file
             await fetch(url)
                 .then((response) => {
