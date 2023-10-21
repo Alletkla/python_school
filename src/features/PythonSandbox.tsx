@@ -262,8 +262,8 @@ export default function PythonSandbox(props: PropsWithChildren
                 <pre className='pe-3 font-monospace'>
                     {getLineNumbering(code)}
                 </pre>
-                <div id="code">
-                    <pre ref={codeArea} className='hide-outline' spellCheck={false} contentEditable={true} dangerouslySetInnerHTML={{ __html: highlighted }} onInput={handleInput} onKeyDown={handleKeyDown}>
+                <div id="code" className='w-100'>
+                    <pre ref={codeArea} className='hide-outline w-100' spellCheck={false} contentEditable={true} dangerouslySetInnerHTML={{ __html: highlighted }} onInput={handleInput} onKeyDown={handleKeyDown}>
 
                     </pre>
                 </div>
