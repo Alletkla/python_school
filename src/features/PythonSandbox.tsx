@@ -79,7 +79,7 @@ export default function PythonSandbox(props: PropsWithChildren
     function runPythonCode() {
         const code = codeArea.current?.textContent
 
-        if (status !== null || output !== null){
+        if (status !== null || output !== null) {
             setStatus(null)
             setOutput(null)
             setExecutionSuspended(true)
@@ -157,7 +157,7 @@ export default function PythonSandbox(props: PropsWithChildren
         return charCount;
     };
 
-    // Function to store the cursor position
+    // Function to restore the cursor position
     function createRange(node: Node, chars: { count: number }, range?: Range): Range {
         if (range === undefined) {
             range = document.createRange()
@@ -241,30 +241,32 @@ export default function PythonSandbox(props: PropsWithChildren
     function handleKeyDown(e: KeyboardEvent<HTMLElement>) {
         if (e.key === "Tab") {
             const cursorPos = getCurrentCursorPosition(e.currentTarget.parentElement?.id || "")
+            console.log(cursorPos)
             e.preventDefault()
-            const codeToIndex = e.currentTarget.textContent?.substring(0,cursorPos) || ""
-            const newCode = codeToIndex + "  " + e.currentTarget.textContent?.substring(cursorPos)
-            setCursorPosition(cursorPos+2)
+            const codeToIndex = e.currentTarget.textContent?.substring(0, cursorPos) || ""
+            const newCode = codeToIndex + "\t" + e.currentTarget.textContent?.substring(cursorPos)
+            setCursorPosition(cursorPos + 1)
             setCode(newCode)
         }
     }
 
-    if (executionSuspended){
+    if (executionSuspended) {
         setExecutionSuspended(false)
         runPythonCode()
     }
 
     return (
         <div className={`theme-atom-one-light ${props.className}`}>
+            {/* panret id must be something, that is not included in the code id, espaccially not empty */}
             <div className='hljs codeWrapper p-2 border rounded text-nowrap overflow-scroll d-flex fs-6'>
                 <pre className='pe-3 font-monospace'>
                     {getLineNumbering(code)}
                 </pre>
-                <pre id="code" className='hide-outline' spellCheck={false} >
-                    <code ref={codeArea} className='hide-outline' contentEditable={true} dangerouslySetInnerHTML={{ __html: highlighted }} onInput={handleInput} onKeyDown={handleKeyDown}>
-                    </code>
+                <div id="code">
+                    <pre ref={codeArea} className='hide-outline' spellCheck={false} contentEditable={true} dangerouslySetInnerHTML={{ __html: highlighted }} onInput={handleInput} onKeyDown={handleKeyDown}>
 
-                </pre>
+                    </pre>
+                </div>
             </div>
             <br />
             <button className='btn btn-primary w-100' type="button" onClick={runPythonCode} disabled={!ableToRun}>Ausführen</button>

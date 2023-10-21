@@ -1,3 +1,7 @@
 .hide-outline{
     outline: none;
 }
+
+pre {
+    tab-size: 4;
+}
