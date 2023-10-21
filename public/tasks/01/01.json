@@ -3,7 +3,7 @@
     "type": "PARAMETERIZED_OPTIONS",
     "description": "In Python kann man sogenannten Funktionen einen Wert mitgeben, mit dem sie arbeiten sollen. \nprint ist eine solche Funktion In Informatik sagen wir: \"Wir übergeben der Funktion einen Parameter\" allgemein erkennst du Funktionen an folgendem Aufbau: Methodenname direkt gefolgt von einer Klammer, optional mehreren Parametern und einer schließenden Klammer. Also z.B. so:\nMETHODENNAME(Parameter1, Parameter2, ....)\n\nJede Funktion hat eine bestimmmte Aufgabe. print z.B. gibt die ihr übergebenen Parameter in der Konsole aus.",
     "code": "print(@@{number;0;50})",
-    "taskText": "Überlege dir, was bei diesem Code in der Konsole ausgegeben wird. Klicke es an und Klicke dann auf ausführen.",
+    "taskText": "Überlege dir, was bei diesem Code in der Konsole ausgegeben wird. Klicke es an und Klicke dann auf ausführen. Teilüberlegungen könnten sein: \n 1. Was macht die Funktion print? \n 2. Was ist ein Parameter? \n 3. Was ist der Parameter in diesem Code?",
     "options": [
         {
             "value": "print(@@{ref:0})",

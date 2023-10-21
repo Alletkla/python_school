@@ -1,0 +1,14 @@
+{
+    "title": "Schleifen - Fehlersuchen",
+    "type": "PARAMETERIZED_OPTIONS",
+    "description": "",
+    "code": "zahl = 0\nwhile: zahl < @@{number;2;10}\n  zahl=zahl+1\nprint(zahl)",
+    "taskText": "Korrigiere die Fehler: Hinweise erhältst du durch die Ausgabe unter der Konsole 😉. Wenn alles richtig ist, sollte folgendes ausgegeben werden.",
+    "options": [
+        {
+            "label": "",
+            "value": "@@{ref:0}",
+            "feedback": ""
+        }
+    ]
+}

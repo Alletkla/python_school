@@ -1,0 +1,14 @@
+{
+    "title": "Verzweigungen Anwenden",
+    "type": "PARAMETERIZED_OPTIONS",
+    "description": "In Deutschland darf man, wenn man 18 oder älter ist, den Autoführerschein 🚘🏁 machen. Schreibe ein Programm, dass z.B. für die Führerscheinstelle automatisch überprüft ob jemand den Autoführerschein bereits machen darf.",
+    "code":"alter = @@{number;0;17}\n #Füge hier deinen Code ein.",
+    "taskText": "Wenn man den Führerschein machen darf, soll \"Du darfst den Autoführerschein machen\" angezeigt werden. Sonst \"Du darfst leider keinen Führerschein machen\"",
+    "options": [
+        {
+            "label": "",
+            "value": "Du darfst leider keinen Führerschein machen",
+            "feedback": ""
+        }
+    ]
+}

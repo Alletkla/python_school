@@ -1,14 +1,14 @@
 {
-    "title": "Variablen Aufgabe",
+    "title": "Variablen Fehler finden",
     "type": "PARAMETERIZED_OPTIONS",
-    "description": "",
-    "code": "a \nprint(a)",
-    "taskText": "Weise der Variablen im Codefenster folgenden Wert zu: (Führe den Code aus, um dein Ergebnis zu überprüfen.)",
+    "description": "Im folgenden Code von LernSax haben sich Fehler eingeschlichen. - Keiner Überraschung, aber wir beheben sie besser:",
+    "code": "name == Förster\nFach = \"Informatik\"\nprint(name)\nprint(fach)",
+    "taskText": "Korrigiere die Fehler: Hinweise erhältst du durch die Ausgabe unter der Konsole 😉. Wenn alles richtig ist, sollte folgendes ausgegeben werden.",
     "options": [
         {
             "label": "",
-            "value": "@@{number;-50;50}",
-            "feedback": "Sieh noch einmal in den vorherhigen Aufgaben zu Variablen nach, wie du Variablen in Python zuweisen kannst"
+            "value": "Förster\nInformatik",
+            "feedback": "Sieh noch einmal genau hin,\n wie Zuweisungen ausehen und wie wir Text zuweisen.\n Vielleicht ist ja auch ein kleiner Schreibfehler (Typo) im Code, sowas passiert schneller als man denkt.\nAuf gehts zum zweiten Versuch. ⤵️"
         }
     ]
 }

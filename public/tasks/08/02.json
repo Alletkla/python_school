@@ -1,0 +1,29 @@
+{
+    "title": "Schleifen - Einführung",
+    "type": "PARAMETERIZED_OPTIONS",
+    "description": "Für die Bedingung können wir wieder alle bekannten Vergleichsoperatoren nutzen:\n- a größer als b    a > b\n- c kleiner als d    c < d\n-  e ist gleich e    e == e (Achtung anders als in der Mathe, entspricht \"ist gleich mit\" 2x =. Da das einfache = der Zuweisung einer Variablen vorbehalten ist. ",
+    "code": "zahl = @@{number;0;50}\nwhile zahl == @@{ref:0}:\n  print(\"ausgeführt\")\n  zahl=zahl+1",
+    "taskText": "Welche Ausgabe erzeugt der Code:",
+    "options": [
+        {
+            "label": "",
+            "value": "ausgeführt",
+            "feedback": ""
+        },
+        {
+            "label": "",
+            "value": "ausgeführt\nausgeführt\nausgeführt",
+            "feedback": "Die Schleife wird nur dann ausgeführt wenn zahl genau gleich mit @@{ref:0}. Dies ist nur einmal der Fall, weil bei jedem durchlauf die zahl um eins erhöht wird."
+        },
+        {
+            "label": "",
+            "value": "ausgeführt\nausgeführt",
+            "feedback": "Die Schleife wird nur dann ausgeführt wenn zahl genau gleich mit @@{ref:0}. Dies ist nur einmal der Fall, weil bei jedem durchlauf die zahl um eins erhöht wird."
+        },
+        {
+            "label": "keine",
+            "value": "",
+            "feedback": "Die Schleife wird nur dann ausgeführt wenn zahl genau gleich mit @@{ref:0}. Dies ist genau einmal der Fall, weil bei jedem durchlauf die zahl um eins erhöht wird."
+        }
+    ]
+}

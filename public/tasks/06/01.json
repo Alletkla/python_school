@@ -1,0 +1,13 @@
+{
+    "title": "Verzweigungen Fehler finden",
+    "type": "PARAMETERIZED_OPTIONS",
+    "description": "Im folgenden Code des Apple-Stores haben sich Fehler eingeschlichen:",
+    "code":"alter = @@{number;15;99}\nWenn alter < 13:: \n  print(\"Du darfst leider kein Instagram installieren.\")\nelse \n  print(\"Du darfst Instagram installieren\")",
+    "taskText": "Korrigiere die Fehler: Hinweise erhältst du durch die Ausgabe unter der Konsole 😉. Wenn alles richtig ist, sollte folgendes ausgegeben werden.",
+    "options": [
+        {
+            "label": "",
+            "value": "Du darfst leider kein Instagram installieren."
+        }
+    ]
+}

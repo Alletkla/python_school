@@ -1,7 +1,7 @@
 {
     "title": "Verzweigungen - mit Else",
     "type": "PARAMETERIZED_OPTIONS",
-    "description": "Wer kennt es nicht noch von früher: \"Wenn du dein Zimmer aufräumst, dann bekommst du ein Eis, sonst nicht\"\n\nWenn, dann, sonst... das kennt auch der Rechner.\nWenn dann kennen wir schon. Fehlt uns noch das sonst:\n\nEine neue Vokabel: else\nelse wird wieder zwingend gefolgt von einem Doppelpunkt. Dieser gibt wieder an, dass der Block nach dem Doppelpunkt ausgeführt werden soll, wenn das Programm in den \"sonst\" Zweig geht.\n\n",
+    "description": "Wer kennt es nicht noch von früher: \"Wenn du dein Zimmer aufräumst, dann bekommst du ein Eis, sonst nicht\"\n\n \"Wenn ..., dann ..., sonst...\" das kennt auch der Rechner.\n \"Wenn ..., dann ... \" kennen wir schon: \n \"If ... : ...\" Fehlt uns noch das sonst:\n\nEine neue Vokabel: else\nelse wird wieder zwingend gefolgt von einem Doppelpunkt. Dieser gibt wieder an, dass der Block nach dem Doppelpunkt ausgeführt werden soll, wenn das Programm in den \"sonst\" Zweig geht.\n\n",
     "code": "# lies: Wenn @@{number;0;20} größer @@{number;21;50}, dann ...\nif @@{ref:0} > @@{ref:1}:\n  print(\"Ich bin kein Mathegenie\")\n  \n# lies: sonst mache ....\nelse:\n  print(\"Ich bin ein Mathegenie\")",
     "taskText": "Welche Ausgabe erzeugt der Code:",
     "options": [

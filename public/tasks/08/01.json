@@ -1,0 +1,29 @@
+{
+    "title": "Schleifen - Einführung",
+    "type": "PARAMETERIZED_OPTIONS",
+    "description": "Oft wollen wir Dinge mehrmals hintereinander bis zu einer bestimmten Abbruchbedingung durchführen.\nJede App soll z.B. solange auf Eingaben warten und darauf reagieren, bis sie geschlossen wird.\n\nDies können wir mithilfe von Schleifen realisieren.\nEine Schleifenart sind die While-Schleifen\n\nAuch hier steht am Ende der Bedingung zur Einleitung des betreffenden Code-Blocks wieder ein Doppelpunkt!!",
+    "code": "zahl = 0\nwhile zahl < 5:\n  print(zahl)\n  zahl=zahl+1",
+    "taskText": "Welche Ausgabe erzeugt der Code:",
+    "options": [
+        {
+            "label": "",
+            "value": "0\n1\n2\n3\n4\n5",
+            "feedback": ""
+        },
+        {
+            "label": "",
+            "value": "0\n1\n2\n3\n4",
+            "feedback": ""
+        },
+        {
+            "label": "",
+            "value": "1\n2\n3\n4\n5",
+            "feedback": ""
+        },
+        {
+            "label": "",
+            "value": "1\n2\n3\n4",
+            "feedback": ""
+        }
+    ]
+}

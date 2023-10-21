@@ -1,0 +1,14 @@
+{
+    "title": "Verzweigungen Fehler finden",
+    "type": "PARAMETERIZED_OPTIONS",
+    "description": "Im folgenden Code für einen Gang-Aufsichts-Roboter 🤖 haben sich Fehler eingeschlichen. Finde alle Fehler!",
+    "code":"klasse = @@{number;1;8}\nif klasse < 9 \n  print(\"Leider keine Handynutzung\")\nelse \n  print(Du darfst dein Handy nutzen)",
+    "taskText": "Korrigiere die Fehler: Hinweise erhältst du durch die Ausgabe unter der Konsole 😉. Wenn alles richtig ist, sollte folgendes ausgegeben werden.",
+    "options": [
+        {
+            "label": "",
+            "value": "Leider keine Handynutzung",
+            "feedback": ""
+        }
+    ]
+}

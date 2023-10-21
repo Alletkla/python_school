@@ -1,0 +1,29 @@
+{
+    "title": "Schleifen - Einführung",
+    "type": "PARAMETERIZED_OPTIONS",
+    "description": "Nachdem wir gesehen haben, was intern in einer Schleife abläuft, sollten wir jetzt auch das Ergebnis nach einem Schleifendurchlauf vorhersagen können.",
+    "code": "zahl = 0\nwhile zahl < @@{number;2;10}:\n  zahl=zahl+1\nprint(zahl)",
+    "taskText": "Welche Ausgabe erzeugt der Code:",
+    "options": [
+        {
+            "label": "",
+            "value": "0",
+            "feedback": "Die Schleifenbedingung ist erfüllt, die Schleife wird also ausgeführt und der Wert für Zahl wird überschrieben"
+        },
+        {
+            "label": "",
+            "value": "1",
+            "feedback": "Die Schleife wird mehr als 1 mal ausgeführt. Bei jedem Durchlauf wird \"zahl\n um eins erhöht."
+        },
+        {
+            "label": "",
+            "value": "@@{ref:0}",
+            "feedback": ""
+        },
+        {
+            "label": "",
+            "value": "11",
+            "feedback": ""
+        }
+    ]
+}

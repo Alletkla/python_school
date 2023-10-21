@@ -1,0 +1,14 @@
+{
+    "title": "Variablen Aufgabe 1",
+    "type": "PARAMETERIZED_OPTIONS",
+    "description": "",
+    "code": "a \nprint(a)",
+    "taskText": "Weise der Variablen folgenden Wert zu: Bearbeite dafür den bereitgestellten Code. Führe den Code aus, um dein Ergebnis zu überprüfen.",
+    "options": [
+        {
+            "label": "",
+            "value": "@@{number;-50;50}",
+            "feedback": "Sieh noch einmal in den vorherhigen Aufgaben zu Variablen nach, wie du Variablen in Python zuweisen kannst"
+        }
+    ]
+}

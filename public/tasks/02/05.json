@@ -1,0 +1,24 @@
+{
+    "title": "Variablen Aufgabe 2",
+    "type": "PARAMETERIZED_OPTIONS",
+    "description": "In den vorherigen Codebeispielen hast du schon einige Zeilen mit einer Raute (Hashtag) \"#\" gesehen.\nDieses Zeichen leitet einen Kommentar ein, der bei der Ausführung des Codes ignoriert wird.\nKommentare dienen der Beschreibung deines Codes, um ihn für andere Entwickler (und dein späteres ich ;) ) verständlicher zu machen.",
+    "code": "x = @@{number;-50;50}\n#x = @@{number;-50;50}\nprint(x)",
+    "taskText": "Welcher Wert wird ausgegeben?",
+    "options": [
+        {
+            "label": "",
+            "value": "@@{ref:0}",
+            "feedback": ""
+        },
+        {
+            "label": "",
+            "value": "@@{ref:1}",
+            "feedback": "Diese Variablenzuweisung befindet sich in einem Kommentar. Kommentare werden beim Ausführen des Codes ignoriert und dienen allein der Dokumentation."
+        },
+        {
+            "label": "",
+            "value": "x",
+            "feedback": "x steht hier für eine Variable. Tauchen Variablen im Code auf, wird für sie der zuletzt zugewiesene Wert eingesetzt. \nSolltest du noch weiter Probleme haben beantworte dir mit den Einleitungstexten unter den Überschriften zu Variablen folgende Fragen: \n1. Was bedeutet ein Wert wird zugewiesen?\n2. Welcher Wert wird als letztes zugewiesen?"
+        }
+    ]
+}

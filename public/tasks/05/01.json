@@ -1,0 +1,24 @@
+{
+    "title": "Mehrere Ausgaben in der Konsole",
+    "type": "PARAMETERIZED_OPTIONS",
+    "description": "Natürlich können wir nicht nur 1-mal etwas ausgeben.\nDie \"Print\"-Funktion kann mehrmals aufgerufen werden.\nBei jedem Aufruf wird eine neue Zeile in der Konsole gestartet.",
+    "code":"print(\"Zeile1\")\nprint(\"Zeile2\")\nprint(\"Zeile3\")",
+    "taskText": "Welche Ausgabe erzeugt der Code:",
+    "options": [
+        {
+            "label": "",
+            "value": "Zeile1\nZeile2\nZeile3"
+        },
+        {
+            "label": "",
+            "value": "Zeile3\nZeile2\nZeile1",
+            "feedback": "Code wird immer von oben nach unten ausgeführt"
+        },
+        {
+            "label": "",
+            "value": "keine Ahnung",
+            "feedback": "lies den Einleitungstext zu dieser Aufgabe noch einmal aufmerksam."
+         
+        }
+    ]
+}

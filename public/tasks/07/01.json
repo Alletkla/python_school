@@ -1,0 +1,19 @@
+{
+    "title": "Verschachtelte Verzweigungen",
+    "type": "PARAMETERIZED_OPTIONS",
+    "description": "Verzweigungen können auch Teil des Codeblocks einer anderen Verzweigung sein. \nFür die Ausführung gilt das gleiche wie du bisher gelernt hast.",
+    "code":"if 5 < @@{number;21;50}:\n  print(\"Bedingung 1 ist wahr\") \n  if 3 < @@{number;21;50}: \n    print(\"Zusätzlich ist auch noch die zweite Bedingung wahr\")\n \nelse:\n  print(\"Bedingung 1 ist falsch, wir sind im sonst Zweig der ersten Bedingung\")",
+    "taskText": "Welche Ausgabe erzeugt der Code:",
+    "options": [
+        {
+            "label": "",
+            "value": "Bedingung 1 ist wahr\nZusätzlich ist auch noch die zweite Bedingung wahr",
+            "feedback": ""
+        },
+        {
+            "label": "",
+            "value": "Bedingung 1 ist falsch, wir sind im sonst Zweig der ersten Bedingung",
+            "feedback": "Bedingung 1 ist wahr, da 5 < @@{ref:0}, damit sind wir im \"Dann-Zweig\" der äußeren Verzweigung (Zeile 2-5). Hier findet sich noch eine innere Verzweigung. Diese Bedingnug ist ebenfalls wahr, da 3 < @@{ref:1}. Dadurch wird print ein zweites mal aufgerufen und 2 Zeilen in der Konsole ausgegeben"
+        }
+    ]
+}

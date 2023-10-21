@@ -1,0 +1,28 @@
+{
+    "title": "Wir verbinden Verzweigungen mit Variablen 1",
+    "type": "PARAMETERIZED_OPTIONS",
+    "description": "",
+    "code": "b = @@{number;0;20} \nif b < @@{number;21;50}:\n  b = @@{number;21;50} \nelse:\n  b = @@{number;51;60}\nprint(b)",
+    "taskText": "Welche Ausgabe erzeugt der Code:",
+    "options": [
+        {
+            "label": "",
+            "value": "@@{ref:0}",
+            "feedback": "Das ist die erste Wertzuweisung der Variablen. Im Code finden später noch weitere Zuweisungen statt, die den ersten Wert überschreiben. Daher ist dieser Wert nicht der Endwert."
+        },
+        {
+            "label": "",
+            "value": "@@{ref:1}",
+            "feedback": "Dieser Wert wird der Variablen nicht zugewiesen."
+        },
+        {
+            "label": "",
+            "value": "@@{ref:2}"
+        },
+        {
+            "label": "",
+            "value": "@@{ref:3}",
+            "feedback": "Ja, dieser Wert wird als letztes im Code der Variablen zugewiesen, aber diese Zuweisung wird nicht ausgeführt. Da die Bedingung der Verzweigung \"wahr\" ist, wird nur der eingerückte Block nach dem \"If \" ausgeführt. \" Wenn ..., dann ...\" der Sonst (else) Zweig wird nicht ausgeführt"
+        }
+    ]
+}
