@@ -1,4 +1,4 @@
-import { FormEvent, KeyboardEvent, PropsWithChildren, useEffect, useRef, useState } from 'react';
+import { FormEvent, KeyboardEvent, PropsWithChildren, Suspense, useEffect, useRef, useState } from 'react';
 import "./PythonSandbox.css"
 import '../assets/js/skulpt.min.js'; // Replace with your actual path
 import '../assets/js/skulpt-stdlib.js'; // Replace with your actual path
@@ -22,6 +22,7 @@ export default function PythonSandbox(props: PropsWithChildren
     const [cursorPosition, setCursorPosition] = useState(0)
     const [output, setOutput] = useState<string | null>(null)
     const [status, setStatus] = useState<string | null>(null)
+    const [executionSuspended, setExecutionSuspended] = useState(false)
     const codeArea = useRef<HTMLPreElement>(null)
     const canvasRef = useRef<HTMLDivElement>(null)
     const outputRef = useRef<HTMLPreElement>(null)
@@ -49,6 +50,7 @@ export default function PythonSandbox(props: PropsWithChildren
         let newOutput = ""
         setOutput(prev => {
             if (!prev || status !== null) {
+                console.log("landed here cause:", prev, status)
                 newOutput = text;
             } else {
                 newOutput = prev + "\n" + text
@@ -77,13 +79,20 @@ export default function PythonSandbox(props: PropsWithChildren
     function runPythonCode() {
         const code = codeArea.current?.textContent
 
+        if (status !== null || output !== null){
+            setStatus(null)
+            setOutput(null)
+            setExecutionSuspended(true)
+            return
+        }
+
         Sk.configure({ output: outf, read: builtinRead });
-        (Sk.TurtleGraphics || (Sk.TurtleGraphics = {})).target = 'mycanvas';
+        (Sk.TurtleGraphics || (Sk.TurtleGraphics = {})).target = canvasRef.current?.id;
 
         const promise = Sk.misceval.asyncToPromise(function () {
             return Sk.importMainWithBody('<stdin>', false, code, true);
         });
-        setStatus("")
+
         promise.then(
             (mod: any) => {
                 //Due to closures and JS handling async events we need to wrap this into another function.
@@ -91,7 +100,6 @@ export default function PythonSandbox(props: PropsWithChildren
                 //Without the function wrapper output would have the value before the promise resolved, since the code got evaluated back then
                 return () => {
                     setStatus('>> Python code executed successfully')
-                    console.log("OUTPUT IN PROMISE", output)
                     if (output === null) {
                         onOutputSet("")
                     }
@@ -239,6 +247,11 @@ export default function PythonSandbox(props: PropsWithChildren
             setCursorPosition(cursorPos+2)
             setCode(newCode)
         }
+    }
+
+    if (executionSuspended){
+        setExecutionSuspended(false)
+        runPythonCode()
     }
 
     return (
