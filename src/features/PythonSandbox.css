@@ -5,3 +5,16 @@
 pre {
     tab-size: 4;
 }
+
+#code code {
+    display: inline-block
+}
+
+.console {
+    max-height: 175px;
+}
+
+.status-bar {
+    word-wrap: break-word;
+    font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;
+}

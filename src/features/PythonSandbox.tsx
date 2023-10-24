@@ -11,12 +11,16 @@ hljs.registerLanguage('python', python);
 //Skip typescript checks for Sk since it has none
 declare var Sk: any
 
+/**
+ * sehr guter Skulpt fiddle zu susoensions: https://jsfiddle.net/hs86fy2z/
+ */
 export default function PythonSandbox(props: PropsWithChildren
     & {
         className?: string
         code: string,
         onOutput: (output: string) => void
         ableToRun?: boolean
+        executionTimeout?: number
     }) {
     const [code, setCode] = useState(props.code)
     const [cursorPosition, setCursorPosition] = useState(0)
@@ -26,8 +30,9 @@ export default function PythonSandbox(props: PropsWithChildren
     const codeArea = useRef<HTMLPreElement>(null)
     const canvasRef = useRef<HTMLDivElement>(null)
     const outputRef = useRef<HTMLPreElement>(null)
-    const statusRef = useRef<HTMLPreElement>(null)
+    const statusRef = useRef<HTMLDivElement>(null)
     const ableToRun = props.ableToRun === undefined ? true : props.ableToRun
+    const executionTimeout = props.executionTimeout || 1000
 
     useEffect(() => {
         // Restore cursor position after rerender
@@ -86,7 +91,7 @@ export default function PythonSandbox(props: PropsWithChildren
             return
         }
 
-        Sk.configure({ output: outf, read: builtinRead });
+        Sk.configure({ output: outf, read: builtinRead, execLimit: executionTimeout, timeoutMsg: () => "Du hast vermutlich eine Endlosschleife programmiert. Der betreffende Block ist " });
         (Sk.TurtleGraphics || (Sk.TurtleGraphics = {})).target = canvasRef.current?.id;
 
         const promise = Sk.misceval.asyncToPromise(function () {
@@ -256,24 +261,22 @@ export default function PythonSandbox(props: PropsWithChildren
     }
 
     return (
-        <div className={`theme-atom-one-light ${props.className}`}>
+        <div className={`theme-atom-one-light ${props.className} w-50`}>
             {/* panret id must be something, that is not included in the code id, espaccially not empty */}
             <div className='hljs codeWrapper p-2 border rounded text-nowrap overflow-scroll d-flex fs-6'>
                 <pre className='pe-3 font-monospace'>
                     {getLineNumbering(code)}
                 </pre>
-                <div id="code" className='w-100'>
-                    <pre ref={codeArea} className='hide-outline w-100' spellCheck={false} contentEditable={true} dangerouslySetInnerHTML={{ __html: highlighted }} onInput={handleInput} onKeyDown={handleKeyDown}>
-
-                    </pre>
-                </div>
+                <pre id="code" className='hide-outline w-100' >
+                    <code className='hide-outline w-100' spellCheck={false} ref={codeArea} contentEditable={true} dangerouslySetInnerHTML={{ __html: highlighted }} onInput={handleInput} onKeyDown={handleKeyDown}></code>
+                </pre>
             </div>
             <br />
             <button className='btn btn-primary w-100' type="button" onClick={runPythonCode} disabled={!ableToRun}>Ausführen</button>
             <div id="mycanvas"></div>
             <h4>Console:</h4>
-            <pre className="bg-light text-dark rounded p-3" ref={outputRef}>{ableToRun ? output || "... Ausführen Klicken für Ausgabe" : "Erst Antwort auswählen"}</pre>
-            <pre ref={statusRef}>{status}</pre>
+            <pre className="console bg-light text-dark rounded p-3" ref={outputRef}>{ableToRun ? output || "... Ausführen Klicken für Ausgabe" : "Erst Antwort auswählen"}</pre>
+            <div className='status-bar' ref={statusRef}>{status}</div>
         </div>
     );
 }
