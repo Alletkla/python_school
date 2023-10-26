@@ -27,6 +27,7 @@ export default function PythonSandbox(props: PropsWithChildren
     const [output, setOutput] = useState<string | null>(null)
     const [status, setStatus] = useState<string | null>(null)
     const [executionSuspended, setExecutionSuspended] = useState(false)
+    const [pythonExecuted, setPythonExecuted] = useState(false)
     const codeArea = useRef<HTMLPreElement>(null)
     const canvasRef = useRef<HTMLDivElement>(null)
     const outputRef = useRef<HTMLPreElement>(null)
@@ -44,18 +45,20 @@ export default function PythonSandbox(props: PropsWithChildren
     //and state-setter are not allowed inside each other
     //Alternative would be lifting state up, what is not desired
     useEffect(() => {
+        if (pythonExecuted === false) {
+            return 
+        } 
         if (output === null) {
-            return
+            props.onOutput("")
+        } else {
+            props.onOutput(output)
         }
-
-        props.onOutput(output)
-    }, [output])
+    }, [pythonExecuted])
 
     function onOutputSet(text: string) {
         let newOutput = ""
         setOutput(prev => {
             if (!prev || status !== null) {
-                console.log("landed here cause:", prev, status)
                 newOutput = text;
             } else {
                 newOutput = prev + "\n" + text
@@ -100,20 +103,13 @@ export default function PythonSandbox(props: PropsWithChildren
 
         promise.then(
             (mod: any) => {
-                //Due to closures and JS handling async events we need to wrap this into another function.
-                //Since the function (and its inner values) is evaluated on runtime. 
-                //Without the function wrapper output would have the value before the promise resolved, since the code got evaluated back then
-                return () => {
-                    setStatus('>> Python code executed successfully')
-                    if (output === null) {
-                        onOutputSet("")
-                    }
-                }
+                setPythonExecuted(true)
+                setStatus('>> Python Code wurde erfolgreich ausgeführt und die Aufgabe damit deaktiviert. Gehe zur nächsten Aufgabe.')
             },
             (err: Error) => {
                 setStatus(err.toString())
             }
-        );
+        )
     }
 
     function isChildOf(node: Node | null, parentId: string) {
@@ -246,7 +242,6 @@ export default function PythonSandbox(props: PropsWithChildren
     function handleKeyDown(e: KeyboardEvent<HTMLElement>) {
         if (e.key === "Tab") {
             const cursorPos = getCurrentCursorPosition(e.currentTarget.parentElement?.id || "")
-            console.log(cursorPos)
             e.preventDefault()
             const codeToIndex = e.currentTarget.textContent?.substring(0, cursorPos) || ""
             const newCode = codeToIndex + "\t" + e.currentTarget.textContent?.substring(cursorPos)
@@ -272,7 +267,7 @@ export default function PythonSandbox(props: PropsWithChildren
                 </pre>
             </div>
             <br />
-            <button className='btn btn-primary w-100' type="button" onClick={runPythonCode} disabled={!ableToRun}>Ausführen</button>
+            <button className='btn btn-primary w-100' type="button" onClick={runPythonCode} disabled={pythonExecuted}>Ausführen</button>
             <div id="mycanvas"></div>
             <h4>Console:</h4>
             <pre className="console bg-light text-dark rounded p-3" ref={outputRef}>{ableToRun ? output || "... Ausführen Klicken für Ausgabe" : "Erst Antwort auswählen"}</pre>

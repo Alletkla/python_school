@@ -83,6 +83,19 @@ export default function Task(props: TaskProps) {
         }
     }
 
+    function renderNextTaskText(){
+        if (!rightOptionId){
+            return <></>
+            
+        }
+        let text = ""
+        if (rightOptionId != selectedOptionId) {
+            text  = "⬇️ Versuche es gleich noch mal 👍🏽 ⬇️"
+        }
+
+        return <div className="fs-2 text-center m-2">{text}</div>
+    }
+
     return (
         <div className="row">
             <PythonSandbox key={props.task.code} className="col-12 col-md" code={props.task.code} onOutput={handleNewOutput} ableToRun={!!selectedOptionId}></PythonSandbox>
@@ -92,6 +105,8 @@ export default function Task(props: TaskProps) {
                 <div className="d-flex flex-wrap">{renderOptions()}</div>
                 {renderFeedback()}
             </div>
+            {renderNextTaskText()}
+            
         </div>
 
     )
