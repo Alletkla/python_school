@@ -21,7 +21,7 @@
         },
         {
             "label": "",
-            "value": "@@{number;-26;50}",
+            "value": "-@@{ref:0}",
             "feedback": "Schau noch einmal genau, welcher Wert der Variablen im Code zugewiesen wurde."
         }
     ]
