@@ -25,13 +25,37 @@ export type OptionId = null | string | "-1"
 
 export default function Task(props: TaskProps) {
     const [rightOptionId, setRightOptionId] = useState<OptionId>(null)
-    const [selectedOptionId, setSelectedOptionId] = useState<string>(props.task.options.length > 1 ? "" : props.task.options[0].id)
+    const [selectedOptionId, setSelectedOptionId] = useState<OptionId>(null)
 
+    //defaults for selected option
+    if (!selectedOptionId && props.task.options.length === 1) {
+        setSelectedOptionId(props.task.options[0].id)
+    }
+    if (!selectedOptionId && props.task.options.length === 0) {
+        setSelectedOptionId("-1")
+    }
+
+    /**
+     * Restrict the setting, if answer was already given
+     * @param id 
+     * @returns 
+     */
     function setSelectedOptionRestriced(id: string) {
         if (rightOptionId !== null) {
             return
         }
         setSelectedOptionId(id)
+    }
+
+    function handleNewOutput(newOutput: string) {
+        const rightOptionIndex = props.task.options.findIndex(option => option.value === newOutput)
+        const rightOptionId = props.task.options[rightOptionIndex]?.id || "-1"
+
+        setRightOptionId(rightOptionId)
+
+        if (rightOptionId !== selectedOptionId) {
+            props.onFail && props.onFail(props.task.id)
+        }
     }
 
     function renderOptions() {
@@ -46,14 +70,13 @@ export default function Task(props: TaskProps) {
             })
         }
     }
-
     function getButtonColor(id: string) {
         if (rightOptionId === id) {
             return "btn-success"
         }
         if (selectedOptionId === id) {
             if (rightOptionId === null) {
-                //no right option set yet --> mark as selected
+                //no right option set yet --> mark the option as selected
                 return "btn-primary"
             }
             return "btn-danger"
@@ -61,42 +84,31 @@ export default function Task(props: TaskProps) {
     }
 
     function renderFeedback() {
-        //Question was answered and Code ran
-        if (rightOptionId !== null && rightOptionId !== selectedOptionId) {
-            const selectedOption = props.task.options.find(option => option.id === selectedOptionId)
-            if (selectedOption?.feedback) {
-                return (
-                    <div>
-                        <div className="card mt-3 text-bg-info">
-                            <div className="card-header">Feedback:</div>
-                            <div className="pre-wrap card-body">{selectedOption?.feedback}</div>
-                        </div>
+        if (rightOptionId === null || rightOptionId === selectedOptionId) {
+            //code did not run yet, or question was answered right
+            return
+        }
+
+        const selectedOption = props.task.options.find(option => option.id === selectedOptionId)
+        if (selectedOption?.feedback) {
+            return (
+                <div>
+                    <div className="card mt-3 text-bg-info">
+                        <div className="card-header">Feedback:</div>
+                        <div className="pre-wrap card-body">{selectedOption?.feedback}</div>
                     </div>
-                )
-            } else {
-                return <></>
-            }
+                </div>
+            )
         }
     }
 
-    function handleNewOutput(newOutput: string) {
-        const rightOptionIndex = props.task.options.findIndex(option => option.value === newOutput)
-        const rightOptionId = props.task.options[rightOptionIndex]?.id  || "-1"
-
-        setRightOptionId(rightOptionId)
-
-        if (rightOptionId !== selectedOptionId) {
-            props.onFail && props.onFail(props.task.id)
-        }
-    }
-
-    function renderNextTaskText(){
-        if (!rightOptionId){
-            return <></>
+    function renderNextTaskText() {
+        if (!rightOptionId) {
+            return
         }
         let text = ""
-        if (rightOptionId != selectedOptionId || rightOptionId == "-1") {
-            text  = "⬇️ Versuche es gleich noch mal 👍🏽 ⬇️"
+        if (rightOptionId !== selectedOptionId || rightOptionId === "-1") {
+            text = "⬇️ Versuche es gleich noch mal 👍🏽 ⬇️"
         }
 
         return <div className="fs-2 text-center m-2">{text}</div>
@@ -112,8 +124,6 @@ export default function Task(props: TaskProps) {
                 {renderFeedback()}
             </div>
             {renderNextTaskText()}
-            
         </div>
-
     )
 }
