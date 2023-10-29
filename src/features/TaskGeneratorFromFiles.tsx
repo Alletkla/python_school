@@ -122,10 +122,10 @@ export default function TaskGeneratorFromFiles(props: PropsWithChildren & { numb
     }
 
     return (<>
-        {tasks.map((task) => {
+        {tasks.map((task, key) => {
             return (
                 <React.Fragment key={task.id}>
-                    <h2>{props.number} - {task?.title}</h2>
+                    <h2 id={`heading_task_${props.number}_${key+1}`}>{props.number}.{key+1} - {task?.title}</h2>
                     <p className="pre-wrap fs-5">{task?.description}</p>
                     <Task task={task} onFail={() => handleFail(task.id, task)}>
                         <div className="pre-wrap">{task.taskText}</div>

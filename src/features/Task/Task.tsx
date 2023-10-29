@@ -16,8 +16,15 @@ export type Option = {
     feedback?: string,
 }
 
+/**
+ * @type null if not set
+ * @type string if found
+ * @type -1 if not found
+ */
+export type OptionId = null | string | "-1"
+
 export default function Task(props: TaskProps) {
-    const [rightOptionId, setRightOptionId] = useState<string | null>(null)
+    const [rightOptionId, setRightOptionId] = useState<OptionId>(null)
     const [selectedOptionId, setSelectedOptionId] = useState<string>(props.task.options.length > 1 ? "" : props.task.options[0].id)
 
     function setSelectedOptionRestriced(id: string) {
@@ -74,7 +81,7 @@ export default function Task(props: TaskProps) {
 
     function handleNewOutput(newOutput: string) {
         const rightOptionIndex = props.task.options.findIndex(option => option.value === newOutput)
-        const rightOptionId = props.task.options[rightOptionIndex]?.id
+        const rightOptionId = props.task.options[rightOptionIndex]?.id  || "-1"
 
         setRightOptionId(rightOptionId)
 
@@ -86,10 +93,9 @@ export default function Task(props: TaskProps) {
     function renderNextTaskText(){
         if (!rightOptionId){
             return <></>
-            
         }
         let text = ""
-        if (rightOptionId != selectedOptionId) {
+        if (rightOptionId != selectedOptionId || rightOptionId == "-1") {
             text  = "⬇️ Versuche es gleich noch mal 👍🏽 ⬇️"
         }
 
