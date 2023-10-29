@@ -256,7 +256,7 @@ export default function PythonSandbox(props: PropsWithChildren
     }
 
     return (
-        <div className={`theme-atom-one-light ${props.className} w-50`}>
+        <div className={`theme-atom-one-light ${props.className}`}>
             {/* panret id must be something, that is not included in the code id, espaccially not empty */}
             <div className='hljs codeWrapper p-2 border rounded text-nowrap overflow-scroll d-flex fs-6'>
                 <pre className='pe-3 font-monospace'>
