@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc --build tsconfig.build.json --clean && vite build",
+    "build": "tsc --build tsconfig.build.json --clean && vite build && npm run postBuild",
+    "postBuild" : "tsc postBuild.ts --module nodenext --moduleResolution nodenext --outDir build_tools && node build_tools/postBuild.js && rm -rf build_tools",
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",

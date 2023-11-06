@@ -4,6 +4,9 @@ import PythonSandbox from "../PythonSandbox";
 export type TaskProps = PropsWithChildren & {
     task: {
         id: string,
+        title: string,
+        taskText: string,
+        description: string,
         code: string,
         options: Option[],
     },
@@ -115,15 +118,19 @@ export default function Task(props: TaskProps) {
     }
 
     return (
-        <div className="row">
-            <PythonSandbox key={props.task.code} className="col-12 col-md" code={props.task.code} onOutput={handleNewOutput} ableToRun={!!selectedOptionId}></PythonSandbox>
-            <div className="col-12 col-md p-2">
-                <h4>Aufgabe: </h4>
-                {props.children}
-                <div className="d-flex flex-wrap">{renderOptions()}</div>
-                {renderFeedback()}
+        <>
+            <h2>{props.task?.title}</h2>
+            <p className="pre-wrap fs-5">{props.task?.description}</p>
+            <div className="row">
+                <PythonSandbox key={props.task.code} className="col-12 col-md-6" code={props.task.code} onOutput={handleNewOutput} ableToRun={!!selectedOptionId}></PythonSandbox>
+                <div className="col-12 col-md-6 p-2">
+                    <h4>Aufgabe: </h4>
+                    {props.task.taskText}
+                    <div className="d-flex flex-wrap">{renderOptions()}</div>
+                    {renderFeedback()}
+                </div>
+                {renderNextTaskText()}
             </div>
-            {renderNextTaskText()}
-        </div>
+        </>
     )
 }

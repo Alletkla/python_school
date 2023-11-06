@@ -8,8 +8,8 @@ export default function TopBar(props: PropsWithChildren
     let taskHeadings = []
     for (let i = 1; i <= props.taskCount; i++) {
         taskHeadings.push(
-            <div key={`#heading_task_${i}_1`} className="btn btn-outline-secondary" onClick={() => scrollIntoView(`#heading_task_${i}_1`)} >
-                <span className="d-none d-sm-block">Aufgabe </span><span>{i}</span>
+            <div key={`#wrapper_task_${i}`} className="btn btn-outline-secondary" onClick={() => scrollIntoView(`#wrapper_task_${i}`)} >
+                <span className="d-none d-md-block">Aufgabe </span><span>{i}</span>
             </div>
         )
     }
