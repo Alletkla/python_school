@@ -1,0 +1,14 @@
+{
+    "title": "Array / Feld / (Liste) - Fehlerfinde",
+    "type": "PARAMETERIZED_OPTIONS",
+    "description": "",
+    "code": "arr = ['Max','Inge','Peter','Reiner','Winfried','Sabine'] \n \nprint(arr[6])",
+    "taskText": "Berichtige den Code, sodass das letzte Element ausgegeben wird.",
+    "options": [
+        {
+            "label": "",
+            "value": "Sabine",
+            "feedback": "Du hast den Code lauffähig bekommen. Sehr gut. Leider hast du noch den falschen Index gewählt."
+        }
+    ]
+}

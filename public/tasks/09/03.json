@@ -1,0 +1,29 @@
+{
+    "title": "Array / Feld / (Liste) - Einführung",
+    "type": "PARAMETERIZED_OPTIONS",
+    "description": "Manchmal braucht man das letzte Element einer Liste. Dafür bietet Python eine besondere Syntax.\n\nDer Index kann auch negativ sein. Dabei steht -1 für das erste Element von hinten. ",
+    "code": "arr = ['Max','Inge','Peter','Reiner','Winfried','Sabine'] \n \nprint(arr[-1])",
+    "taskText": "Welche Ausgabe erzeugt der Code:",
+    "options": [
+        {
+            "label": "",
+            "value": "Max",
+            "feedback": "Sowohl Index als auch Richtung sind falsch. Lies noch mal die Einleitungstexte unter den Überschriften zu Array / Feld / Liste"
+        },
+        {
+            "label": "",
+            "value": "Sabine",
+            "feedback": ""
+        },
+        {
+            "label": "",
+            "value": "Winfried",
+            "feedback": "Sehr gut. Du hast erkannt, dass du von hinten beginnen musst. Allerdings steht der Index -1 für das erste Element von hinten."
+        },
+        {
+            "label": "",
+            "value": "Inge",
+            "feedback": "Inge ist die Antwort für den Index 1. Es wurde aber der Index -1 gegeben. Das Minus im Index verrät dir, dass du von hinten anfangen musst zu zählen."
+        }
+    ]
+}

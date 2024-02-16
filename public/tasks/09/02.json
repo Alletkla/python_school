@@ -1,0 +1,29 @@
+{
+    "title": "Array / Feld / (Liste) - Einführung",
+    "type": "PARAMETERIZED_OPTIONS",
+    "description": "",
+    "code": "arr = ['Max','Inge','Peter','Reiner','Winfried','Sabine'] \n \nprint(arr[1])",
+    "taskText": "Welche Ausgabe erzeugt der Code:",
+    "options": [
+        {
+            "label": "",
+            "value": "Max",
+            "feedback": "Ein Index fängt bei 0 an zu zählen."
+        },
+        {
+            "label": "",
+            "value": "Inge",
+            "feedback": ""
+        },
+        {
+            "label": "",
+            "value": "arr[0]",
+            "feedback": "Es wird der Wert an dieser Stelle zurückgegeben."
+        },
+        {
+            "label": "",
+            "value": "arr",
+            "feedback": "Lies noch mal den Einleitungstext unter der Überschrift"
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+{
+    "title": "Array / Feld / (Liste) - Einführung",
+    "type": "PARAMETERIZED_OPTIONS",
+    "description": "",
+    "code": "arr = ['Max','Inge','Peter','Reiner','Winfried','Sabine'] \n \nprint(arr[4])",
+    "taskText": "Berichtige den Code, sodass Reiner ausgegeben wird.",
+    "options": [
+        {
+            "label": "",
+            "value": "Winfried",
+            "feedback": ""
+        },
+        {
+            "label": "",
+            "value": "Reiner",
+            "feedback": "Sehr gut. Du hast erkannt, dass ein positiver Index von vorn beginnt zu zählen. Der Index beginnt allerdings bei 0 für das erste Element"
+        },
+        {
+            "label": "",
+            "value": "Peter",
+            "feedback": "Ein positiver Index beginnt von vorn mit zählen."
+        },
+        {
+            "label": "",
+            "value": "Inge",
+            "feedback": "Ein positiver Index beginnt von vorn mit zählen."
+        }
+    ]
+}

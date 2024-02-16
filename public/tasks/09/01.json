@@ -1,0 +1,29 @@
+{
+    "title": "Array / Feld / (Liste) - Einführung",
+    "type": "PARAMETERIZED_OPTIONS",
+    "description": "Sobald wir mehrere Elemente verwalten wollen, z.B. alle Schüler und Schülerinnen der Schule, wird es ineffizient mit einzelnen Variablen zu arbeiten. Dafür enthält Python ein neues Konzept: Das Array (oder auch Feld bzw. Liste genannt) \n \nEine Liste kann in einer Variablen mehrere Werte speichern (In diesem Beispiel heißt die Variabel arr). \nIn eckigen Klammern steht der Index der Liste. (In diesem Code Beispiel 0) \nDer Index beginnt bei 0 für das erste Element.",
+    "code": "arr = ['Max','Inge','Peter','Reiner','Winfried','Sabine'] \n \nprint(arr[0])",
+    "taskText": "Welche Ausgabe erzeugt der Code:",
+    "options": [
+        {
+            "label": "",
+            "value": "Max",
+            "feedback": ""
+        },
+        {
+            "label": "",
+            "value": "Inge",
+            "feedback": "Die 0 als Index gibt an, dass es sich um das erste Element handelt."
+        },
+        {
+            "label": "",
+            "value": "arr[0]",
+            "feedback": "Es wird der Wert an dieser Stelle zurückgegeben"
+        },
+        {
+            "label": "",
+            "value": "arr",
+            "feedback": ""
+        }
+    ]
+}
